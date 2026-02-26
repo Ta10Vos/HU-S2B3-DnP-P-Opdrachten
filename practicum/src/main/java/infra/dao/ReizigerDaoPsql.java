@@ -13,25 +13,86 @@ public class ReizigerDaoPsql implements IReizigerDao {
     private IAdresDao adresDao;
 
     public ReizigerDaoPsql(Connection connection) {
-
-    }
-
-
-    @Override
-    public void save(Reiziger reiziger) throws SQLException {
+        this.connection = connection;
     }
 
     @Override
-    public void update(Reiziger reiziger) throws SQLException {
+    public boolean save(Reiziger reiziger) throws SQLException {
+        // Create new reiziger with params
+        String sql = "INSERT INTO " +
+                "reiziger (reiziger_id, voorletters, tussenvoegsel, achternaam, geboortedatum) " +
+                "VALUES (?, ?, ?, ?, ?);";
+
+        PreparedStatement pst = connection.prepareStatement(sql);
+        pst.setInt(1, reiziger.getReizigerId());
+        pst.setString(2, reiziger.getVoorletters());
+        pst.setString(3, reiziger.getTussenvoegsel());
+        pst.setString(4, reiziger.getAchternaam());
+        pst.setDate(5, reiziger.getGeboortedatum());
+
+        return pst.execute();
     }
 
     @Override
-    public void delete(Reiziger reiziger) throws SQLException {
+    public boolean update(Reiziger reiziger) throws SQLException {
+        // Update reiziger with params
+        String sql = "UPDATE " +
+                "reiziger " +
+                "SET voorletters=?, " +
+                "tussenvoegsel=?, " +
+                "achternaam=?, " +
+                "geboortedatum=? " +
+                "WHERE reiziger_id=?;";
+
+        PreparedStatement pst = connection.prepareStatement(sql);
+        pst.setString(1, reiziger.getVoorletters());
+        pst.setString(2, reiziger.getTussenvoegsel());
+        pst.setString(3, reiziger.getAchternaam());
+        pst.setDate(4, reiziger.getGeboortedatum());
+        pst.setInt(5, reiziger.getReizigerId());
+
+        return pst.execute();
+    }
+
+    @Override
+    public boolean delete(Reiziger reiziger) throws SQLException {
+        // Delete reiziger with id param
+        String sql = "DELETE FROM reiziger " +
+                "WHERE reiziger_id=?;";
+
+        PreparedStatement pst = connection.prepareStatement(sql);
+        pst.setInt(1, reiziger.getReizigerId());
+
+        return pst.execute();
     }
 
     @Override
     public Reiziger findById(int id) throws SQLException {
-        return null;
+        // Make sure we only fetch 1 reiziger with id param
+        String sql = "SELECT * FROM reiziger " +
+                "WHERE reiziger_id=? " +
+                "LIMIT 1";
+
+        PreparedStatement pst = connection.prepareStatement(sql);
+        pst.setInt(1, id);
+
+        // Check if execution went well before getting the results
+        if (!pst.execute()) return null;
+
+        ResultSet rs = pst.getResultSet();
+
+        // If there's no results, return null.
+        if (!rs.next()) return null;
+
+        Reiziger r = new Reiziger();
+
+        r.setReizigerId(rs.getInt("reiziger_id"));
+        r.setVoorletters(rs.getString("voorletters"));
+        r.setTussenvoegsel(rs.getString("tussenvoegsel"));
+        r.setAchternaam(rs.getString("achternaam"));
+        r.setGeboortedatum(rs.getDate("geboortedatum"));
+
+        return r;
     }
 
     @Override

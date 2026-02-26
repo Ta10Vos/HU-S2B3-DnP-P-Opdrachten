@@ -17,15 +17,18 @@ public class ReizigerHibernate implements IReizigerDao {
     }
 
     @Override
-    public void save(Reiziger reiziger) throws SQLException {
+    public boolean save(Reiziger reiziger) throws SQLException {
+        return false;
     }
 
     @Override
-    public void update(Reiziger reiziger) throws SQLException {
+    public boolean update(Reiziger reiziger) throws SQLException {
+        return false;
     }
 
     @Override
-    public void delete(Reiziger reiziger) throws SQLException {
+    public boolean delete(Reiziger reiziger) throws SQLException {
+        return false;
     }
 
     @Override

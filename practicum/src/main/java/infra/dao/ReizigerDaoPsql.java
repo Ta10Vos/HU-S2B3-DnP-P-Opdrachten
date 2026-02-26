@@ -97,12 +97,58 @@ public class ReizigerDaoPsql implements IReizigerDao {
 
     @Override
     public List<Reiziger> findByGeboorteDatum(Date date) throws SQLException {
-        return null;
+        // Make sure we only fetch 1 reiziger with id param
+        String sql = "SELECT * FROM reiziger " +
+                "WHERE geboortedatum=? ";
+
+        PreparedStatement pst = connection.prepareStatement(sql);
+        pst.setDate(1, date);
+
+        // Check if execution went well before getting the results
+        if (!pst.execute()) return null;
+
+        ResultSet rs = pst.getResultSet();
+        ArrayList<Reiziger> reizigers = new ArrayList<Reiziger>();
+
+        // Loop through results
+        while (rs.next()) {
+            Reiziger r = new Reiziger();
+
+            r.setReizigerId(rs.getInt("reiziger_id"));
+            r.setVoorletters(rs.getString("voorletters"));
+            r.setTussenvoegsel(rs.getString("tussenvoegsel"));
+            r.setAchternaam(rs.getString("achternaam"));
+            r.setGeboortedatum(rs.getDate("geboortedatum"));
+        }
+
+        return reizigers;
     }
 
     @Override
     public List<Reiziger> findAll() throws SQLException {
-        return null;
+        // Select all reizigers
+        String sql = "SELECT * FROM reiziger";
+
+        PreparedStatement pst = connection.prepareStatement(sql);
+
+        // Check if execution went well before getting the results
+        if (!pst.execute()) return null;
+
+        ResultSet rs = pst.getResultSet();
+        ArrayList<Reiziger> reizigers = new ArrayList<Reiziger>();
+
+        // Loop through results
+        while (rs.next()) {
+            Reiziger r = new Reiziger();
+
+            r.setReizigerId(rs.getInt("reiziger_id"));
+            r.setVoorletters(rs.getString("voorletters"));
+            r.setTussenvoegsel(rs.getString("tussenvoegsel"));
+            r.setAchternaam(rs.getString("achternaam"));
+            r.setGeboortedatum(rs.getDate("geboortedatum"));
+        }
+
+        return reizigers;
     }
 
     public void setAdresDao(IAdresDao adresDaoPsql) {

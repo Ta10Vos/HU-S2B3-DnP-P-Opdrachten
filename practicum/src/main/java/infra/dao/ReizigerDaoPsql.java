@@ -71,7 +71,7 @@ public class ReizigerDaoPsql implements IReizigerDao {
         // Make sure we only fetch 1 reiziger with id param
         String sql = "SELECT * FROM reiziger " +
                 "WHERE reiziger_id=? " +
-                "LIMIT 1";
+                "LIMIT 1;";
 
         PreparedStatement pst = connection.prepareStatement(sql);
         pst.setInt(1, id);
@@ -129,7 +129,7 @@ public class ReizigerDaoPsql implements IReizigerDao {
     @Override
     public List<Reiziger> findAll() throws SQLException {
         // Select all reizigers
-        String sql = "SELECT * FROM reiziger";
+        String sql = "SELECT * FROM reiziger;";
 
         PreparedStatement pst = connection.prepareStatement(sql);
 

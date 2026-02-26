@@ -99,7 +99,7 @@ public class ReizigerDaoPsql implements IReizigerDao {
     public List<Reiziger> findByGeboorteDatum(Date date) throws SQLException {
         // Make sure we only fetch 1 reiziger with id param
         String sql = "SELECT * FROM reiziger " +
-                "WHERE geboortedatum=? ";
+                "WHERE geboortedatum=?;";
 
         PreparedStatement pst = connection.prepareStatement(sql);
         pst.setDate(1, date);
@@ -119,6 +119,8 @@ public class ReizigerDaoPsql implements IReizigerDao {
             r.setTussenvoegsel(rs.getString("tussenvoegsel"));
             r.setAchternaam(rs.getString("achternaam"));
             r.setGeboortedatum(rs.getDate("geboortedatum"));
+
+            reizigers.add(r);
         }
 
         return reizigers;
@@ -146,6 +148,8 @@ public class ReizigerDaoPsql implements IReizigerDao {
             r.setTussenvoegsel(rs.getString("tussenvoegsel"));
             r.setAchternaam(rs.getString("achternaam"));
             r.setGeboortedatum(rs.getDate("geboortedatum"));
+
+            reizigers.add(r);
         }
 
         return reizigers;

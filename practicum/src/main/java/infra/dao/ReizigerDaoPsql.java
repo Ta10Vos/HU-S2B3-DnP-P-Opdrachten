@@ -30,7 +30,10 @@ public class ReizigerDaoPsql implements IReizigerDao {
         pst.setString(4, reiziger.getAchternaam());
         pst.setDate(5, reiziger.getGeboortedatum());
 
-        return pst.execute();
+        boolean result = pst.execute();
+
+        pst.close();
+        return result;
     }
 
     @Override
@@ -51,7 +54,10 @@ public class ReizigerDaoPsql implements IReizigerDao {
         pst.setDate(4, reiziger.getGeboortedatum());
         pst.setInt(5, reiziger.getReizigerId());
 
-        return pst.execute();
+        boolean result = pst.execute();
+
+        pst.close();
+        return result;
     }
 
     @Override
@@ -63,7 +69,9 @@ public class ReizigerDaoPsql implements IReizigerDao {
         PreparedStatement pst = connection.prepareStatement(sql);
         pst.setInt(1, reiziger.getReizigerId());
 
-        return pst.execute();
+        boolean result = pst.execute();
+        pst.close();
+        return result;
     }
 
     @Override
@@ -92,6 +100,7 @@ public class ReizigerDaoPsql implements IReizigerDao {
         r.setAchternaam(rs.getString("achternaam"));
         r.setGeboortedatum(rs.getDate("geboortedatum"));
 
+        pst.close();
         return r;
     }
 
@@ -123,6 +132,7 @@ public class ReizigerDaoPsql implements IReizigerDao {
             reizigers.add(r);
         }
 
+        pst.close();
         return reizigers;
     }
 
@@ -152,6 +162,7 @@ public class ReizigerDaoPsql implements IReizigerDao {
             reizigers.add(r);
         }
 
+        pst.close();
         return reizigers;
     }
 

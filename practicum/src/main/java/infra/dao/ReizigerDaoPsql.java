@@ -133,6 +133,7 @@ public class ReizigerDaoPsql implements IReizigerDao {
         r.setGeboortedatum(rs.getDate("geboortedatum"));
         r.setAdres(aDao.findByReiziger(r));
 
+        rs.close();
         pst.close();
         return r;
     }
@@ -166,6 +167,7 @@ public class ReizigerDaoPsql implements IReizigerDao {
             reizigers.add(r);
         }
 
+        rs.close();
         pst.close();
         return reizigers;
     }
@@ -197,6 +199,7 @@ public class ReizigerDaoPsql implements IReizigerDao {
             reizigers.add(r);
         }
 
+        rs.close();
         pst.close();
         return reizigers;
     }

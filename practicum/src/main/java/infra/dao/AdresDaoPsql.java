@@ -133,6 +133,7 @@ public class AdresDaoPsql implements IAdresDao {
         a.setStraat(rs.getString("straat"));
         a.setWoonplaats(rs.getString("woonplaats"));
 
+        rs.close();
         pst.close();
         return a;
     }
@@ -161,6 +162,7 @@ public class AdresDaoPsql implements IAdresDao {
             adressen.add(a);
         }
 
+        rs.close();
         pst.close();
         return adressen;
     }

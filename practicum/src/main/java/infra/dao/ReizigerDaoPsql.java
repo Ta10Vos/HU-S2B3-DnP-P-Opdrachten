@@ -70,6 +70,7 @@ public class ReizigerDaoPsql implements IReizigerDao {
                 aDao.delete(oldAdr);
             }
             if (adr != null) {
+                adr.setReiziger(reiziger);
                 aDao.save(adr);
             }
         }

@@ -30,12 +30,12 @@ public class AdresDaoPsql implements IAdresDao {
         pst.setString(2, adres.getPostcode());
         pst.setString(3, adres.getHuisnummer());
         pst.setString(4, adres.getStraat());
-        if (rzg == null) {
-            pst.setNull(5, Types.INTEGER);
+        pst.setString(5, adres.getWoonplaats());
+        if (rzg != null) {
+            pst.setInt(6, rzg.getReizigerId());
         } else {
-            pst.setInt(5, rzg.getReizigerId());
+            pst.setNull(6, Types.INTEGER);
         }
-        pst.setString(6, adres.getWoonplaats());
 
         boolean result = pst.execute();
         pst.close();

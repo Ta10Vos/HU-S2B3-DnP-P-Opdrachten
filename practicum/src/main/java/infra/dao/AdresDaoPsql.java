@@ -20,15 +20,20 @@ public class AdresDaoPsql implements IAdresDao {
     @Override
     public boolean save(Adres adres) throws SQLException {
         String sql = "INSERT INTO " +
-                "adres(adres_id, postcode, huisnummer, straat, woonplaats) " +
-                "VALUES (?, ?, ?, ?, ?);";
+                "adres(adres_id, postcode, huisnummer, straat, woonplaats, reiziger_id) " +
+                "VALUES (?, ?, ?, ?, ?, ?);";
+
+        Reiziger rzg = adres.getReiziger();
 
         PreparedStatement pst = connection.prepareStatement(sql);
         pst.setInt(1, adres.getAdresId());
         pst.setString(2, adres.getPostcode());
         pst.setString(3, adres.getHuisnummer());
         pst.setString(4, adres.getStraat());
-        pst.setString(5, adres.getWoonplaats());
+        if (rzg != null) {
+            pst.setInt(5, rzg.getReizigerId());
+        }
+        pst.setString(6, adres.getWoonplaats());
 
         boolean result = pst.execute();
         pst.close();
@@ -42,15 +47,21 @@ public class AdresDaoPsql implements IAdresDao {
                 "postcode=?, " +
                 "huisnummer=?, " +
                 "straat=?, " +
-                "woonplaats=? " +
+                "woonplaats=?, " +
+                "reiziger_id=? " +
                 "WHERE adres_id=?;";
+
+        Reiziger rzg = adres.getReiziger();
 
         PreparedStatement pst = connection.prepareStatement(sql);
         pst.setString(1, adres.getPostcode());
         pst.setString(2, adres.getHuisnummer());
         pst.setString(3, adres.getStraat());
         pst.setString(4, adres.getWoonplaats());
-        pst.setInt(5, adres.getAdresId());
+        if (rzg != null) {
+            pst.setInt(5, rzg.getReizigerId());
+        }
+        pst.setInt(6, adres.getAdresId());
 
         boolean result = pst.execute();
         pst.close();

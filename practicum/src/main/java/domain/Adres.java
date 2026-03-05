@@ -64,4 +64,31 @@ public class Adres {
     public void setReiziger(Reiziger reiziger) {
         this.reiziger = reiziger;
     }
+
+    public String toString(boolean ignoreReiziger) {
+        StringBuilder sb = new StringBuilder();
+
+        sb.append("Adres(");
+        sb.append(getAdresId());
+        sb.append(") van ");
+        sb.append(straat);
+        sb.append(" ");
+        sb.append(huisnummer);
+        sb.append(" ");
+        sb.append(woonplaats);
+        sb.append(" ");
+        sb.append(postcode);
+        if (!ignoreReiziger && reiziger != null) {
+            sb.append(" waar ");
+            sb.append(reiziger.toString(true, true));
+            sb.append(" woont");
+        }
+
+        return sb.toString();
+    }
+
+    @Override
+    public String toString() {
+        return toString(false);
+    }
 }

@@ -75,8 +75,7 @@ public class Reiziger {
         this.ovChipkaarten = ovChipkaarten;
     }
 
-    @Override
-    public String toString() {
+    public String toString(boolean ignoreAdres, boolean ignoreOvChipkaarten) {
         StringBuilder sb = new StringBuilder();
 
         List<OvChipkaart> ovChipkaarten = getOvChipkaart();
@@ -97,12 +96,12 @@ public class Reiziger {
             sb.append(getGeboortedatum().toString());
         }
 
-        if (!(getAdres() == null)) {
+        if (!ignoreAdres && !(getAdres() == null)) {
             sb.append(" woont op: ");
-            sb.append(getAdres().toString());
+            sb.append(getAdres().toString(true));
         }
 
-        if (!ovChipkaarten.isEmpty()) {
+        if (!ignoreOvChipkaarten && !ovChipkaarten.isEmpty()) {
             sb.append(" en heeft ov-chipkaarten: \n");
 
             for(OvChipkaart ovChip : getOvChipkaart()) {
@@ -112,5 +111,10 @@ public class Reiziger {
         }
 
         return sb.toString();
+    }
+
+    @Override
+    public String toString() {
+        return toString(false, false);
     }
 }

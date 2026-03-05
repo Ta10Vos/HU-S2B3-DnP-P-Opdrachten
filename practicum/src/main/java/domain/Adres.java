@@ -1,11 +1,11 @@
 package domain;
 
 public class Adres {
-    private int id;// max 10
-    private String postcode;// max 10
-    private String huisnummer;// max 10
-    private String straat;// max 255
-    private String woonplaats;// max 255
+    private int id = -1;// max 10
+    private String postcode = "";// max 10
+    private String huisnummer = "";// max 10
+    private String straat = "";// max 255
+    private String woonplaats = "";// max 255
 
     private Reiziger reiziger;
 
@@ -78,7 +78,28 @@ public class Adres {
         this.reiziger = reiziger;
     }
 
-    public String toString(boolean ignoreReiziger) {
+    @Override
+    public boolean equals(Object object) {
+        // Instanceof handles null
+        if (!(object instanceof Adres)) return false;
+
+        Adres adr = (Adres) object;
+
+        if (getAdresId() != adr.getAdresId()) return false;
+
+        if (!getPostcode().equals(adr.getPostcode())) return false;
+
+        if (!getHuisnummer().equals(adr.getHuisnummer())) return false;
+
+        if (!getStraat().equals(adr.getStraat())) return false;
+
+        if (!getWoonplaats().equals(adr.getWoonplaats())) return false;
+
+        return true;
+    }
+
+    @Override
+    public String toString() {
         StringBuilder sb = new StringBuilder();
 
         sb.append("Adres(");
@@ -91,17 +112,7 @@ public class Adres {
         sb.append(woonplaats);
         sb.append(" ");
         sb.append(postcode);
-        if (!ignoreReiziger && reiziger != null) {
-            sb.append(" waar ");
-            sb.append(reiziger.toString(true, true));
-            sb.append(" woont");
-        }
 
         return sb.toString();
-    }
-
-    @Override
-    public String toString() {
-        return toString(false);
     }
 }

@@ -5,13 +5,14 @@ import jakarta.persistence.*;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Reiziger {
-    private int id;
-    private String voorletters;
-    private String tussenvoegsel;
-    private String achternaam;
-    private Date geboortedatum;
+    private int id = -1;
+    private String voorletters = "";
+    private String tussenvoegsel = null;
+    private String achternaam = "";
+    private Date geboortedatum = null;
 
     private domain.Adres adres;
     private List<OvChipkaart> ovChipkaarten = new ArrayList<OvChipkaart>();
@@ -75,6 +76,30 @@ public class Reiziger {
         this.ovChipkaarten = ovChipkaarten;
     }
 
+    @Override
+    public boolean equals(Object object) {
+        // Instanceof handles null
+        if (!(object instanceof Reiziger)) return false;
+
+        Reiziger rzg = (Reiziger) object;
+
+        if (getReizigerId() != rzg.getReizigerId()) return false;
+
+        if (!getVoorletters().equals(rzg.getVoorletters())) return false;
+
+        if (!Objects.equals(getTussenvoegsel(), rzg.getTussenvoegsel())) return false;
+
+        if (!getAchternaam().equals(rzg.getAchternaam())) return false;
+
+        if (!Objects.equals(getGeboortedatum(), rzg.getGeboortedatum())) return false;
+
+        if (!Objects.equals(getAdres(), rzg.getAdres())) return false;
+
+        if (!Objects.equals(getOvChipkaart(), rzg.getOvChipkaart())) return false;
+
+        return true;
+    }
+
     public String toString(boolean ignoreAdres, boolean ignoreOvChipkaarten) {
         StringBuilder sb = new StringBuilder();
 
@@ -98,7 +123,7 @@ public class Reiziger {
 
         if (!ignoreAdres && !(getAdres() == null)) {
             sb.append(" woont op: ");
-            sb.append(getAdres().toString(true));
+            sb.append(getAdres().toString());
         }
 
         if (!ignoreOvChipkaarten && !ovChipkaarten.isEmpty()) {

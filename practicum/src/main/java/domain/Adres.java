@@ -28,7 +28,7 @@ public class Adres {
     }
 
     public String getHuisnummer() {
-        return postcode;
+        return huisnummer;
     }
 
     /** Set the huisnummer with the max of 10 chars */

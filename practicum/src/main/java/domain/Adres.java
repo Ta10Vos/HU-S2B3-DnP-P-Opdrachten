@@ -23,7 +23,10 @@ public class Adres {
 
     /** Set the postcode with the max of 10 chars */
     public void setPostcode(String postcode) {
-        if (postcode.length() > 10) return;
+        if (postcode == null) return;
+        if (postcode.length() > 10) {
+            postcode = postcode.substring(0, 10);
+        }
         this.postcode = postcode;
     }
 
@@ -33,7 +36,10 @@ public class Adres {
 
     /** Set the huisnummer with the max of 10 chars */
     public void setHuisnummer(String huisnummer) {
-        if (huisnummer.length() > 10) return;
+        if (huisnummer == null) return;
+        if (huisnummer.length() > 10) {
+            huisnummer = huisnummer.substring(0, 10);
+        }
         this.huisnummer = huisnummer;
     }
 
@@ -43,7 +49,10 @@ public class Adres {
 
     /** Set the straat with the max of 255 chars */
     public void setStraat(String straat) {
-        if (straat.length() > 255) return;
+        if (straat == null) return;
+        if (straat.length() > 255) {
+            straat = straat.substring(0, 255);
+        }
         this.straat = straat;
     }
 
@@ -53,7 +62,10 @@ public class Adres {
 
     /** Set the woonplaats with the max of 255 chars */
     public void setWoonplaats(String woonplaats) {
-        if (woonplaats.length() > 255) return;
+        if (woonplaats == null) return;
+        if (woonplaats.length() > 255) {
+            woonplaats = woonplaats.substring(0, 255);
+        }
         this.woonplaats = woonplaats;
     }
 
@@ -62,6 +74,7 @@ public class Adres {
     }
 
     public void setReiziger(Reiziger reiziger) {
+        if (reiziger == null) return;
         this.reiziger = reiziger;
     }
 

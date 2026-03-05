@@ -126,7 +126,7 @@ public class Reiziger {
             sb.append(getAdres().toString());
         }
 
-        if (!ignoreOvChipkaarten && !ovChipkaarten.isEmpty()) {
+        if (!ignoreOvChipkaarten && ovChipkaarten != null && !ovChipkaarten.isEmpty()) {
             sb.append(" en heeft ov-chipkaarten: \n");
 
             for(OvChipkaart ovChip : getOvChipkaart()) {

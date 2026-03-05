@@ -8,10 +8,10 @@ import java.util.List;
 import java.util.Objects;
 
 public class Reiziger {
-    private int id = -1;
-    private String voorletters = "";
-    private String tussenvoegsel = null;
-    private String achternaam = "";
+    private int id = -1;// max 10 chars
+    private String voorletters = "";// max 10 chars
+    private String tussenvoegsel = null;// max 10 chars
+    private String achternaam = "";// max 255 chars
     private Date geboortedatum = null;
 
     private domain.Adres adres;
@@ -30,6 +30,10 @@ public class Reiziger {
     public String getVoorletters() { return voorletters; }
 
     public void setVoorletters(String voorletters) {
+        if (voorletters == null) return;
+        if (voorletters.length() > 10) {
+            voorletters = voorletters.substring(0, 10);
+        }
         this.voorletters = voorletters.trim();
     }
 
@@ -40,6 +44,8 @@ public class Reiziger {
     public void setTussenvoegsel(String tussenvoegsel) {
         if (tussenvoegsel == null) {
             tussenvoegsel = "";
+        } else if (voorletters.length() > 10) {
+            voorletters = voorletters.substring(0, 10);
         }
         this.tussenvoegsel = tussenvoegsel.trim();
     }
@@ -49,6 +55,10 @@ public class Reiziger {
     }
 
     public void setAchternaam(String achternaam) {
+        if (achternaam == null) return;
+        if (achternaam.length() > 255) {
+            achternaam = achternaam.substring(0, 255);
+        }
         this.achternaam = achternaam.trim();
     }
 

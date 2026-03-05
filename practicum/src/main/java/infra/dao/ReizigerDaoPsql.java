@@ -9,8 +9,8 @@ import java.util.List;
 public class ReizigerDaoPsql implements IReizigerDao {
 
     private Connection connection;
-    private IOvChipkaartDao ovChipkaartDao;
-    private IAdresDao adresDao;
+    private IOvChipkaartDao ockDao;
+    private IAdresDao aDao;
 
     public ReizigerDaoPsql(Connection connection) {
         this.connection = connection;
@@ -167,7 +167,7 @@ public class ReizigerDaoPsql implements IReizigerDao {
     }
 
     public void setAdresDao(IAdresDao adresDaoPsql) {
-
+        this.aDao = adresDaoPsql;
     }
 
     public void setOvChipkaartDao(IOvChipkaartDao ovChipkaartDaoPsql) {

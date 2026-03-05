@@ -5,6 +5,7 @@ import domain.*;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class ReizigerDaoPsql implements IReizigerDao {
 
@@ -30,6 +31,11 @@ public class ReizigerDaoPsql implements IReizigerDao {
         pst.setString(4, reiziger.getAchternaam());
         pst.setDate(5, reiziger.getGeboortedatum());
 
+        Adres adr = reiziger.getAdres();
+        if (adr != null) {
+            aDao.save(adr);
+        }
+
         boolean result = pst.execute();
 
         pst.close();
@@ -47,12 +53,26 @@ public class ReizigerDaoPsql implements IReizigerDao {
                 "geboortedatum=? " +
                 "WHERE reiziger_id=?;";
 
+        Reiziger oldRzg = this.findById(reiziger.getReizigerId());
+
         PreparedStatement pst = connection.prepareStatement(sql);
         pst.setString(1, reiziger.getVoorletters());
         pst.setString(2, reiziger.getTussenvoegsel());
         pst.setString(3, reiziger.getAchternaam());
         pst.setDate(4, reiziger.getGeboortedatum());
         pst.setInt(5, reiziger.getReizigerId());
+
+        Adres adr = reiziger.getAdres();
+        Adres oldAdr = oldRzg.getAdres();
+
+        if (!Objects.equals(adr, oldAdr)) {
+            if (oldAdr != null) {
+                aDao.delete(oldAdr);
+            }
+            if (adr != null) {
+                aDao.save(adr);
+            }
+        }
 
         boolean result = pst.execute();
 
@@ -66,11 +86,23 @@ public class ReizigerDaoPsql implements IReizigerDao {
         String sql = "DELETE FROM reiziger " +
                 "WHERE reiziger_id=?;";
 
-        PreparedStatement pst = connection.prepareStatement(sql);
-        pst.setInt(1, reiziger.getReizigerId());
+        boolean result = true;
 
-        boolean result = pst.execute();
-        pst.close();
+        Adres adr = reiziger.getAdres();
+        // Delete adres
+        if (adr != null) {
+            result = aDao.delete(adr);
+        }
+
+        // Only delete reiziger if relations have been successfully removed
+        if (result) {
+            PreparedStatement pst = connection.prepareStatement(sql);
+            pst.setInt(1, reiziger.getReizigerId());
+
+            result = pst.execute();
+            pst.close();
+        }
+
         return result;
     }
 
@@ -99,6 +131,7 @@ public class ReizigerDaoPsql implements IReizigerDao {
         r.setTussenvoegsel(rs.getString("tussenvoegsel"));
         r.setAchternaam(rs.getString("achternaam"));
         r.setGeboortedatum(rs.getDate("geboortedatum"));
+        r.setAdres(aDao.findByReiziger(r));
 
         pst.close();
         return r;
@@ -128,6 +161,7 @@ public class ReizigerDaoPsql implements IReizigerDao {
             r.setTussenvoegsel(rs.getString("tussenvoegsel"));
             r.setAchternaam(rs.getString("achternaam"));
             r.setGeboortedatum(rs.getDate("geboortedatum"));
+            r.setAdres(aDao.findByReiziger(r));
 
             reizigers.add(r);
         }
@@ -158,6 +192,7 @@ public class ReizigerDaoPsql implements IReizigerDao {
             r.setTussenvoegsel(rs.getString("tussenvoegsel"));
             r.setAchternaam(rs.getString("achternaam"));
             r.setGeboortedatum(rs.getDate("geboortedatum"));
+            r.setAdres(aDao.findByReiziger(r));
 
             reizigers.add(r);
         }

@@ -14,15 +14,18 @@ public class AdresHibernate implements domain.IAdresDao {
     }
 
     @Override
-    public void save(Adres adres) throws SQLException {
+    public boolean save(Adres adres) throws SQLException {
+        return false;
     }
 
     @Override
-    public void update(Adres adres) throws SQLException {
+    public boolean update(Adres adres) throws SQLException {
+        return false;
     }
 
     @Override
-    public void delete(Adres adres) throws SQLException {
+    public boolean delete(Adres adres) throws SQLException {
+        return false;
     }
 
     @Override

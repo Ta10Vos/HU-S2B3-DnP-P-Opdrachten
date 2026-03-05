@@ -110,7 +110,13 @@ public class ReizigerDaoPsql implements IReizigerDao {
     @Override
     public Reiziger findById(int id) throws SQLException {
         // Make sure we only fetch 1 reiziger with id param
-        String sql = "SELECT * FROM reiziger " +
+        String sql = "SELECT " +
+                "reiziger_id, " +
+                "voorletters, " +
+                "tussenvoegsel, " +
+                "achternaam, " +
+                "geboortedatum " +
+                "FROM reiziger " +
                 "WHERE reiziger_id=? " +
                 "LIMIT 1;";
 
@@ -142,7 +148,13 @@ public class ReizigerDaoPsql implements IReizigerDao {
     @Override
     public List<Reiziger> findByGeboorteDatum(Date date) throws SQLException {
         // Make sure we only fetch 1 reiziger with id param
-        String sql = "SELECT * FROM reiziger " +
+        String sql = "SELECT " +
+                "reiziger_id, " +
+                "voorletters, " +
+                "tussenvoegsel, " +
+                "achternaam, " +
+                "geboortedatum " +
+                "FROM reiziger " +
                 "WHERE geboortedatum=?;";
 
         PreparedStatement pst = connection.prepareStatement(sql);
@@ -176,7 +188,13 @@ public class ReizigerDaoPsql implements IReizigerDao {
     @Override
     public List<Reiziger> findAll() throws SQLException {
         // Select all reizigers
-        String sql = "SELECT * FROM reiziger;";
+        String sql = "SELECT " +
+                "reiziger_id, " +
+                "voorletters, " +
+                "tussenvoegsel, " +
+                "achternaam, " +
+                "geboortedatum " +
+                "FROM reiziger;";
 
         PreparedStatement pst = connection.prepareStatement(sql);
 

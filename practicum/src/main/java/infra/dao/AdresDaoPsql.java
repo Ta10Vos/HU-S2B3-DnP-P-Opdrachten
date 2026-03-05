@@ -85,7 +85,13 @@ public class AdresDaoPsql implements IAdresDao {
 
     @Override
     public Adres findById(int id) throws SQLException {
-        String sql = "SELECT * FROM adres " +
+        String sql = "SELECT " +
+                "adres_id, " +
+                "postcode, " +
+                "huisnummer, " +
+                "straat, " +
+                "woonplaats " +
+                "FROM adres " +
                 "WHERE adres_id=?;";
 
         PreparedStatement pst = connection.prepareStatement(sql);
@@ -110,7 +116,13 @@ public class AdresDaoPsql implements IAdresDao {
 
     @Override
     public Adres findByReiziger(Reiziger reiziger) throws SQLException {
-        String sql = "SELECT * FROM adres " +
+        String sql = "SELECT " +
+                "adres_id, " +
+                "postcode, " +
+                "huisnummer, " +
+                "straat, " +
+                "woonplaats " +
+                "FROM adres " +
                 "WHERE reiziger_id=?;";
 
         PreparedStatement pst = connection.prepareStatement(sql);
@@ -140,7 +152,13 @@ public class AdresDaoPsql implements IAdresDao {
 
     @Override
     public List<Adres> findAll() throws SQLException {
-        String sql = "SELECT * FROM adres ";
+        String sql = "SELECT " +
+                "adres_id, " +
+                "postcode, " +
+                "huisnummer, " +
+                "straat, " +
+                "woonplaats " +
+                "FROM adres;";
 
         PreparedStatement pst = connection.prepareStatement(sql);
 

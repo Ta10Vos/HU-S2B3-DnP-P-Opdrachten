@@ -25,9 +25,6 @@ public class AdresDaoPsql implements IAdresDao {
 
         int rzgId = adres.getReiziger().getReizigerId();
 
-        System.out.println("THIS IS REIZIGER ID ON ADRES: ");
-        System.out.println(rzgId);
-
         PreparedStatement pst = connection.prepareStatement(sql);
         pst.setInt(1, adres.getAdresId());
         pst.setString(2, adres.getPostcode());

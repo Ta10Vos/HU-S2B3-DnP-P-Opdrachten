@@ -10,6 +10,8 @@ import java.util.Objects;
 public class ReizigerDaoPsql implements IReizigerDao {
 
     private Connection connection;
+    // I'm not checking if dao's are not null, so that I follow the fail-fast design.
+    // I do not want to hide configuration errors.
     private IOvChipkaartDao ockDao;
     private IAdresDao aDao;
 

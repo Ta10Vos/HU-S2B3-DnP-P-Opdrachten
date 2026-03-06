@@ -93,16 +93,14 @@ public class ReizigerDaoPsql implements IReizigerDao {
         // Delete adres
         if (adr != null) {
             result = aDao.delete(adr);
+            reiziger.setAdres(null);
         }
 
-        // Only delete reiziger if relations have been successfully removed
-        if (result) {
-            PreparedStatement pst = connection.prepareStatement(sql);
-            pst.setInt(1, reiziger.getReizigerId());
+        PreparedStatement pst = connection.prepareStatement(sql);
+        pst.setInt(1, reiziger.getReizigerId());
 
-            result = pst.execute();
-            pst.close();
-        }
+        result = pst.execute() && result;
+        pst.close();
 
         return result;
     }

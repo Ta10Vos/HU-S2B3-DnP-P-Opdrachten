@@ -23,7 +23,10 @@ public class AdresDaoPsql implements IAdresDao {
                 "adres(adres_id, postcode, huisnummer, straat, woonplaats, reiziger_id) " +
                 "VALUES (?, ?, ?, ?, ?, ?);";
 
-        Reiziger rzg = adres.getReiziger();
+        int rzgId = adres.getReiziger().getReizigerId();
+
+        System.out.println("THIS IS REIZIGER ID ON ADRES: ");
+        System.out.println(rzgId);
 
         PreparedStatement pst = connection.prepareStatement(sql);
         pst.setInt(1, adres.getAdresId());
@@ -31,11 +34,7 @@ public class AdresDaoPsql implements IAdresDao {
         pst.setString(3, adres.getHuisnummer());
         pst.setString(4, adres.getStraat());
         pst.setString(5, adres.getWoonplaats());
-        if (rzg != null) {
-            pst.setInt(6, rzg.getReizigerId());
-        } else {
-            pst.setNull(6, Types.INTEGER);
-        }
+        pst.setInt(6, rzgId);
 
         boolean result = pst.execute();
         pst.close();
@@ -53,16 +52,14 @@ public class AdresDaoPsql implements IAdresDao {
                 "reiziger_id=? " +
                 "WHERE adres_id=?;";
 
-        Reiziger rzg = adres.getReiziger();
+        int rzgId = adres.getReiziger().getReizigerId();
 
         PreparedStatement pst = connection.prepareStatement(sql);
         pst.setString(1, adres.getPostcode());
         pst.setString(2, adres.getHuisnummer());
         pst.setString(3, adres.getStraat());
         pst.setString(4, adres.getWoonplaats());
-        if (rzg != null) {
-            pst.setInt(5, rzg.getReizigerId());
-        }
+        pst.setInt(5, rzgId);
         pst.setInt(6, adres.getAdresId());
 
         boolean result = pst.execute();

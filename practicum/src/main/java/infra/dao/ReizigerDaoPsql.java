@@ -21,8 +21,8 @@ public class ReizigerDaoPsql implements IReizigerDao {
     public boolean save(Reiziger reiziger) throws SQLException {
         // Create new reiziger with params
         String sql = "INSERT INTO " +
-                "reiziger (reiziger_id, voorletters, tussenvoegsel, achternaam, geboortedatum) " +
-                "VALUES (?, ?, ?, ?, ?);";
+                "reiziger(reiziger_id, voorletters, tussenvoegsel, achternaam, geboortedatum) " +
+                "VALUES(?, ?, ?, ?, ?);";
 
         PreparedStatement pst = connection.prepareStatement(sql);
         pst.setInt(1, reiziger.getReizigerId());
@@ -31,14 +31,18 @@ public class ReizigerDaoPsql implements IReizigerDao {
         pst.setString(4, reiziger.getAchternaam());
         pst.setDate(5, reiziger.getGeboortedatum());
 
+        boolean result = pst.execute();
+        pst.close();
+
         Adres adr = reiziger.getAdres();
         if (adr != null) {
-            aDao.save(adr);
+            adr.setReiziger(reiziger);
+            result = aDao.save(adr) && result;
+            if (result) {
+                reiziger.setAdres(adr);
+            }
         }
 
-        boolean result = pst.execute();
-
-        pst.close();
         return result;
     }
 

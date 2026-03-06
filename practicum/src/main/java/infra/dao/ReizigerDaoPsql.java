@@ -31,15 +31,16 @@ public class ReizigerDaoPsql implements IReizigerDao {
         pst.setString(4, reiziger.getAchternaam());
         pst.setDate(5, reiziger.getGeboortedatum());
 
-        boolean result = pst.execute();
+        // Check if at least 1 row action was executed
+        boolean result = pst.executeUpdate() > 0;
         pst.close();
 
-        Adres adr = reiziger.getAdres();
-        if (adr != null) {
-            adr.setReiziger(reiziger);
-            result = aDao.save(adr) && result;
-            if (result) {
-                reiziger.setAdres(adr);
+        // Only add relations if the reiziger was added
+        if (result) {
+            Adres adr = reiziger.getAdres();
+            if (adr != null) {
+                adr.setReiziger(reiziger);
+                result = aDao.save(adr);
             }
         }
 
@@ -66,26 +67,28 @@ public class ReizigerDaoPsql implements IReizigerDao {
         pst.setDate(4, reiziger.getGeboortedatum());
         pst.setInt(5, reiziger.getReizigerId());
 
-        Adres adr = reiziger.getAdres();
-        Adres oldAdr = (oldRzg != null) ? oldRzg.getAdres() : null;
+        boolean result = pst.executeUpdate() > 0;
+        pst.close();
 
+        // Get the adressen, so that we can compare them
+        Adres adr = reiziger.getAdres();
+        Adres oldAdr = null;
+        if (oldRzg != null) {
+            // Only set old adres if old (non-updated) reiziger was found
+            oldAdr = oldRzg.getAdres();
+        }
+
+        // Only update adres relation if it changed
         if (!Objects.equals(adr, oldAdr)) {
             if (oldAdr != null) {
-                if (aDao.delete(oldAdr)) {
-                    reiziger.setAdres(null);
-                }
+                result = aDao.delete(oldAdr) && result;
             }
             if (adr != null) {
                 adr.setReiziger(reiziger);
-                if (aDao.save(adr)) {
-                    reiziger.setAdres(adr);
-                }
+                result = aDao.save(adr) && result;
             }
         }
 
-        boolean result = pst.execute();
-
-        pst.close();
         return result;
     }
 
@@ -100,15 +103,17 @@ public class ReizigerDaoPsql implements IReizigerDao {
         Adres adr = reiziger.getAdres();
         // Delete adres
         if (adr != null) {
+            // Make sure result is only affected if there's a relation
             result = aDao.delete(adr);
-            reiziger.setAdres(null);
         }
 
-        PreparedStatement pst = connection.prepareStatement(sql);
-        pst.setInt(1, reiziger.getReizigerId());
+        if (result) {
+            PreparedStatement pst = connection.prepareStatement(sql);
+            pst.setInt(1, reiziger.getReizigerId());
 
-        result = pst.execute() && result;
-        pst.close();
+            result = pst.executeUpdate() > 0;
+            pst.close();
+        }
 
         return result;
     }
@@ -145,6 +150,11 @@ public class ReizigerDaoPsql implements IReizigerDao {
         r.setAchternaam(rs.getString("achternaam"));
         r.setGeboortedatum(rs.getDate("geboortedatum"));
         r.setAdres(aDao.findByReiziger(r));
+
+        Adres adr = r.getAdres();
+        if (adr != null) {
+            adr.setReiziger(r);
+        }
 
         rs.close();
         pst.close();
@@ -183,6 +193,11 @@ public class ReizigerDaoPsql implements IReizigerDao {
             r.setGeboortedatum(rs.getDate("geboortedatum"));
             r.setAdres(aDao.findByReiziger(r));
 
+            Adres adr = r.getAdres();
+            if (adr != null) {
+                adr.setReiziger(r);
+            }
+
             reizigers.add(r);
         }
 
@@ -220,6 +235,11 @@ public class ReizigerDaoPsql implements IReizigerDao {
             r.setAchternaam(rs.getString("achternaam"));
             r.setGeboortedatum(rs.getDate("geboortedatum"));
             r.setAdres(aDao.findByReiziger(r));
+
+            Adres adr = r.getAdres();
+            if (adr != null) {
+                adr.setReiziger(r);
+            }
 
             reizigers.add(r);
         }

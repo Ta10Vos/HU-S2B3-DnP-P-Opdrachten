@@ -33,7 +33,9 @@ public class AdresDaoPsql implements IAdresDao {
         pst.setString(5, adres.getWoonplaats());
         pst.setInt(6, rzgId);
 
-        boolean result = pst.execute();
+        // Check if at least 1 row action was executed
+        boolean result = pst.executeUpdate() > 0;
+
         pst.close();
         return result;
     }
@@ -59,7 +61,7 @@ public class AdresDaoPsql implements IAdresDao {
         pst.setInt(5, rzgId);
         pst.setInt(6, adres.getAdresId());
 
-        boolean result = pst.execute();
+        boolean result = pst.executeUpdate() > 0;
         pst.close();
         return result;
     }
@@ -72,7 +74,8 @@ public class AdresDaoPsql implements IAdresDao {
         PreparedStatement pst = connection.prepareStatement(sql);
         pst.setInt(1, adres.getAdresId());
 
-        boolean result = pst.execute();
+        boolean result = pst.executeUpdate() > 0;
+
         pst.close();
         return result;
     }

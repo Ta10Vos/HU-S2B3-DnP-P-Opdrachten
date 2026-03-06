@@ -67,7 +67,7 @@ public class ReizigerDaoPsql implements IReizigerDao {
         pst.setInt(5, reiziger.getReizigerId());
 
         Adres adr = reiziger.getAdres();
-        Adres oldAdr = oldRzg.getAdres();
+        Adres oldAdr = (oldRzg != null) ? oldRzg.getAdres() : null;
 
         if (!Objects.equals(adr, oldAdr)) {
             if (oldAdr != null) {

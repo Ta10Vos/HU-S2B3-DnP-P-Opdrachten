@@ -71,11 +71,15 @@ public class ReizigerDaoPsql implements IReizigerDao {
 
         if (!Objects.equals(adr, oldAdr)) {
             if (oldAdr != null) {
-                aDao.delete(oldAdr);
+                if (aDao.delete(oldAdr)) {
+                    reiziger.setAdres(null);
+                }
             }
             if (adr != null) {
                 adr.setReiziger(reiziger);
-                aDao.save(adr);
+                if (aDao.save(adr)) {
+                    reiziger.setAdres(adr);
+                }
             }
         }
 

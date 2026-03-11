@@ -22,9 +22,9 @@ public class ReizigerDaoPsql implements IReizigerDao {
     @Override
     public boolean save(Reiziger reiziger) throws SQLException {
         // Create new reiziger with params
-        String sql = "INSERT INTO " +
-                "reiziger(reiziger_id, voorletters, tussenvoegsel, achternaam, geboortedatum) " +
-                "VALUES(?, ?, ?, ?, ?);";
+        String sql = "INSERT INTO reiziger " +
+                "(reiziger_id, voorletters, tussenvoegsel, achternaam, geboortedatum) " +
+                "VALUES (?, ?, ?, ?, ?);";
 
         PreparedStatement pst = connection.prepareStatement(sql);
         pst.setInt(1, reiziger.getReizigerId());
@@ -43,8 +43,7 @@ public class ReizigerDaoPsql implements IReizigerDao {
     @Override
     public boolean update(Reiziger reiziger) throws SQLException {
         // Update reiziger with params
-        String sql = "UPDATE " +
-                "reiziger " +
+        String sql = "UPDATE reiziger " +
                 "SET voorletters=?, " +
                 "tussenvoegsel=?, " +
                 "achternaam=?, " +

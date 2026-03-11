@@ -38,6 +38,7 @@ public class ReizigerDaoPsql implements IReizigerDao {
         pst.close();
 
         Adres adr = reiziger.getAdres();
+        // Only save adres if the Reiziger was successfully added & we have an Adres.
         if (result && adr != null) {
             aDao.save(adr);
         }
@@ -66,7 +67,7 @@ public class ReizigerDaoPsql implements IReizigerDao {
         pst.close();
 
         Adres adr = reiziger.getAdres();
-        if (adr != null) {
+        if (result && adr != null) {
             aDao.update(adr);
         }
 
@@ -79,22 +80,18 @@ public class ReizigerDaoPsql implements IReizigerDao {
         String sql = "DELETE FROM reiziger " +
                 "WHERE reiziger_id=?;";
 
-        boolean result = true;
-
         Adres adr = reiziger.getAdres();
         // Delete adres
         if (adr != null) {
             // Make sure result is only affected if there's a relation
-            result = aDao.delete(adr);
+            aDao.delete(adr);
         }
 
-        if (result) {
-            PreparedStatement pst = connection.prepareStatement(sql);
-            pst.setInt(1, reiziger.getReizigerId());
+        PreparedStatement pst = connection.prepareStatement(sql);
+        pst.setInt(1, reiziger.getReizigerId());
 
-            result = pst.executeUpdate() > 0;
-            pst.close();
-        }
+        boolean result = pst.executeUpdate() > 0;
+        pst.close();
 
         return result;
     }

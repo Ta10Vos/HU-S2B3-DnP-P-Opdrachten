@@ -66,7 +66,6 @@ public class Adres {
     public Reiziger getReiziger() { return reiziger; }
 
     public void setReiziger(Reiziger reiziger) {
-        if (reiziger == null) return;
         this.reiziger = reiziger;
     }
 
@@ -96,7 +95,7 @@ public class Adres {
 
         sb.append("Adres(");
         sb.append(getAdresId());
-        sb.append(") van ");
+        sb.append(") ");
         sb.append(getStraat());
         sb.append(" ");
         sb.append(getHuisnummer());
@@ -104,8 +103,18 @@ public class Adres {
         sb.append(getWoonplaats());
         sb.append(" ");
         sb.append(getPostcode());
-        sb.append(". Reiziger(Id) op dit adres: ");
-        sb.append(getReiziger().getReizigerId());
+        sb.append(". [ReizigerId=");
+
+        Reiziger rzg = getReiziger();
+        // Safety null-check for reiziger
+        // Even though DB guarantees it's not null, it can still be null if it's not persisted yet.
+        if (rzg == null) {
+            sb.append("null");
+        } else {
+            sb.append(rzg.getReizigerId());
+        }
+
+        sb.append("]");
 
         return sb.toString();
     }

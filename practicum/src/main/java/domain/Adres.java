@@ -30,9 +30,7 @@ public class Adres {
         this.postcode = postcode;
     }
 
-    public String getHuisnummer() {
-        return huisnummer;
-    }
+    public String getHuisnummer() { return huisnummer; }
 
     /** Set the huisnummer with the max of 10 chars */
     public void setHuisnummer(String huisnummer) {
@@ -43,9 +41,7 @@ public class Adres {
         this.huisnummer = huisnummer;
     }
 
-    public String getStraat() {
-        return straat;
-    }
+    public String getStraat() { return straat; }
 
     /** Set the straat with the max of 255 chars */
     public void setStraat(String straat) {
@@ -56,9 +52,7 @@ public class Adres {
         this.straat = straat;
     }
 
-    public String getWoonplaats() {
-        return woonplaats;
-    }
+    public String getWoonplaats() { return woonplaats; }
 
     /** Set the woonplaats with the max of 255 chars */
     public void setWoonplaats(String woonplaats) {
@@ -69,9 +63,7 @@ public class Adres {
         this.woonplaats = woonplaats;
     }
 
-    public Reiziger getReiziger() {
-        return reiziger;
-    }
+    public Reiziger getReiziger() { return reiziger; }
 
     public void setReiziger(Reiziger reiziger) {
         if (reiziger == null) return;
@@ -105,13 +97,15 @@ public class Adres {
         sb.append("Adres(");
         sb.append(getAdresId());
         sb.append(") van ");
-        sb.append(straat);
+        sb.append(getStraat());
         sb.append(" ");
-        sb.append(huisnummer);
+        sb.append(getHuisnummer());
+        sb.append(", ");
+        sb.append(getWoonplaats());
         sb.append(" ");
-        sb.append(woonplaats);
-        sb.append(" ");
-        sb.append(postcode);
+        sb.append(getPostcode());
+        sb.append(". Reiziger(Id) op dit adres: ");
+        sb.append(getReiziger().getReizigerId());
 
         return sb.toString();
     }

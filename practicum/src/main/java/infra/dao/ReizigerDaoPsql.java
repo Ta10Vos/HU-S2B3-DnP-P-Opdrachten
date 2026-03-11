@@ -51,8 +51,6 @@ public class ReizigerDaoPsql implements IReizigerDao {
                 "geboortedatum=? " +
                 "WHERE reiziger_id=?;";
 
-        Reiziger oldRzg = this.findById(reiziger.getReizigerId());
-
         PreparedStatement pst = connection.prepareStatement(sql);
         pst.setString(1, reiziger.getVoorletters());
         pst.setString(2, reiziger.getTussenvoegsel());
@@ -63,23 +61,9 @@ public class ReizigerDaoPsql implements IReizigerDao {
         boolean result = pst.executeUpdate() > 0;
         pst.close();
 
-        // Get the adressen, so that we can compare them
         Adres adr = reiziger.getAdres();
-        Adres oldAdr = null;
-        if (oldRzg != null) {
-            // Only set old adres if old (non-updated) reiziger was found
-            oldAdr = oldRzg.getAdres();
-        }
-
-        // Only update adres relation if it changed
-        if (!Objects.equals(adr, oldAdr)) {
-            if (oldAdr != null) {
-                result = aDao.delete(oldAdr) && result;
-            }
-            if (adr != null) {
-                adr.setReiziger(reiziger);
-                result = aDao.save(adr) && result;
-            }
+        if (adr != null) {
+            aDao.update(adr);
         }
 
         return result;
@@ -144,11 +128,6 @@ public class ReizigerDaoPsql implements IReizigerDao {
         r.setGeboortedatum(rs.getDate("geboortedatum"));
         r.setAdres(aDao.findByReiziger(r));
 
-        Adres adr = r.getAdres();
-        if (adr != null) {
-            adr.setReiziger(r);
-        }
-
         rs.close();
         pst.close();
         return r;
@@ -185,11 +164,6 @@ public class ReizigerDaoPsql implements IReizigerDao {
             r.setAchternaam(rs.getString("achternaam"));
             r.setGeboortedatum(rs.getDate("geboortedatum"));
             r.setAdres(aDao.findByReiziger(r));
-
-            Adres adr = r.getAdres();
-            if (adr != null) {
-                adr.setReiziger(r);
-            }
 
             reizigers.add(r);
         }
@@ -228,11 +202,6 @@ public class ReizigerDaoPsql implements IReizigerDao {
             r.setAchternaam(rs.getString("achternaam"));
             r.setGeboortedatum(rs.getDate("geboortedatum"));
             r.setAdres(aDao.findByReiziger(r));
-
-            Adres adr = r.getAdres();
-            if (adr != null) {
-                adr.setReiziger(r);
-            }
 
             reizigers.add(r);
         }

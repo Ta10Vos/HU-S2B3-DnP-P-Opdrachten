@@ -37,15 +37,6 @@ public class ReizigerDaoPsql implements IReizigerDao {
         boolean result = pst.executeUpdate() > 0;
         pst.close();
 
-        // Only add relations if the reiziger was added
-        if (result) {
-            Adres adr = reiziger.getAdres();
-            if (adr != null) {
-                adr.setReiziger(reiziger);
-                result = aDao.save(adr);
-            }
-        }
-
         return result;
     }
 

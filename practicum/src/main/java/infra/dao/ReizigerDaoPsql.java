@@ -175,7 +175,6 @@ public class ReizigerDaoPsql implements IReizigerDao {
             if (adr != null) {
                 adr.setReiziger(r);
             }
-            reizigers.add(r);
 
             reizigers.add(r);
         }
@@ -219,7 +218,6 @@ public class ReizigerDaoPsql implements IReizigerDao {
             if (adr != null) {
                 adr.setReiziger(r);
             }
-            reizigers.add(r);
 
             reizigers.add(r);
         }

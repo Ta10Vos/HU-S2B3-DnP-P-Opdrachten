@@ -68,6 +68,7 @@ public class ReizigerDaoPsql implements IReizigerDao {
 
         Adres adr = reiziger.getAdres();
         if (result && adr != null) {
+            adr.setReiziger(reiziger);
             aDao.update(adr);
         }
 

@@ -130,6 +130,11 @@ public class ReizigerDaoPsql implements IReizigerDao {
         r.setGeboortedatum(rs.getDate("geboortedatum"));
         r.setAdres(aDao.findByReiziger(r));
 
+        Adres adr = r.getAdres();
+        if (adr != null) {
+            adr.setReiziger(r);
+        }
+
         rs.close();
         pst.close();
         return r;
@@ -166,6 +171,12 @@ public class ReizigerDaoPsql implements IReizigerDao {
             r.setAchternaam(rs.getString("achternaam"));
             r.setGeboortedatum(rs.getDate("geboortedatum"));
             r.setAdres(aDao.findByReiziger(r));
+
+            Adres adr = r.getAdres();
+            if (adr != null) {
+                adr.setReiziger(r);
+            }
+            reizigers.add(r);
 
             reizigers.add(r);
         }
@@ -204,6 +215,12 @@ public class ReizigerDaoPsql implements IReizigerDao {
             r.setAchternaam(rs.getString("achternaam"));
             r.setGeboortedatum(rs.getDate("geboortedatum"));
             r.setAdres(aDao.findByReiziger(r));
+
+            Adres adr = r.getAdres();
+            if (adr != null) {
+                adr.setReiziger(r);
+            }
+            reizigers.add(r);
 
             reizigers.add(r);
         }

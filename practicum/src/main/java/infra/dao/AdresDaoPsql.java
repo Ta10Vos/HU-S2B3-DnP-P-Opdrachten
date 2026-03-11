@@ -164,8 +164,6 @@ public class AdresDaoPsql implements IAdresDao {
 
         ResultSet rs = pst.getResultSet();
 
-        if (!rs.next()) return new ArrayList<Adres>();
-
         ArrayList<Adres> adressen = new ArrayList<Adres>();
 
         while (rs.next()) {

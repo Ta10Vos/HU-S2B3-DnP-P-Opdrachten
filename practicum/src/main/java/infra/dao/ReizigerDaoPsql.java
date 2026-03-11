@@ -68,7 +68,6 @@ public class ReizigerDaoPsql implements IReizigerDao {
 
         Adres adr = reiziger.getAdres();
         if (result && adr != null) {
-            adr.setReiziger(reiziger);
             aDao.update(adr);
         }
 
@@ -77,16 +76,16 @@ public class ReizigerDaoPsql implements IReizigerDao {
 
     @Override
     public boolean delete(Reiziger reiziger) throws SQLException {
-        // Delete reiziger with id param
-        String sql = "DELETE FROM reiziger " +
-                "WHERE reiziger_id=?;";
-
         Adres adr = reiziger.getAdres();
         // Delete adres
         if (adr != null) {
             // Make sure result is only affected if there's a relation
             aDao.delete(adr);
         }
+
+        // Delete reiziger with id param
+        String sql = "DELETE FROM reiziger " +
+                "WHERE reiziger_id=?;";
 
         PreparedStatement pst = connection.prepareStatement(sql);
         pst.setInt(1, reiziger.getReizigerId());

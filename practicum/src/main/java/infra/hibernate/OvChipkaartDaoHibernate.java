@@ -17,14 +17,17 @@ public class OvChipkaartDaoHibernate implements IOvChipkaartDao {
 
     @Override
     public boolean save(OvChipkaart ovChipkaart) throws SQLException {
+        return false;
     }
 
     @Override
     public boolean update(OvChipkaart ovChipkaart) throws SQLException {
+        return false;
     }
 
     @Override
     public boolean delete(OvChipkaart ovChipkaart) throws SQLException {
+        return false;
     }
 
     @Override

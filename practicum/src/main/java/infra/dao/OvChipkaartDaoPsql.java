@@ -6,20 +6,22 @@ import java.sql.*;
 import java.util.List;
 
 public class OvChipkaartDaoPsql implements IOvChipkaartDao {
+    private Connection connection;
+    private IProductDao pDao;
 
     public OvChipkaartDaoPsql(Connection connection) {
-
+        this.connection = connection;
     }
     @Override
-    public void save(OvChipkaart ovChipkaart) throws SQLException {
-    }
-
-    @Override
-    public void update(OvChipkaart ovChipkaart) throws SQLException {
+    public boolean save(OvChipkaart ovChipkaart) throws SQLException {
     }
 
     @Override
-    public void delete(OvChipkaart ovChipkaart) throws SQLException {
+    public boolean update(OvChipkaart ovChipkaart) throws SQLException {
+    }
+
+    @Override
+    public boolean delete(OvChipkaart ovChipkaart) throws SQLException {
     }
 
     @Override
@@ -38,6 +40,6 @@ public class OvChipkaartDaoPsql implements IOvChipkaartDao {
     }
 
     public void setProductDao(IProductDao productDao) {
-
+        this.pDao = productDao;
     }
 }

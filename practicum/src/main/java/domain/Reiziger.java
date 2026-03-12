@@ -79,7 +79,7 @@ public class Reiziger {
     }
 
     public List<OvChipkaart> getOvChipkaart() {
-        return null;
+        return ovChipkaarten;
     }
 
     public void setOvChipkaart(List<OvChipkaart> ovChipkaarten) {

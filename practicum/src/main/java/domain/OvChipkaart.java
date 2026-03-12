@@ -108,12 +108,15 @@ public class OvChipkaart {
             sb.append(reiziger.getReizigerId());
         }
 
+        sb.append(". [ProductIds=]");
+
         ArrayList<Product> producten = new ArrayList<Product>(getProducten());
         if (producten.isEmpty()) {
             sb.append("geen");
         } else {
             for (Product p : producten) {
                 sb.append(p.getProductNummer());
+                sb.append(",");
             }
         }
 

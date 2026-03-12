@@ -1,5 +1,7 @@
 package domain;
 
+import java.util.Objects;
+
 public class Adres {
     private int id = -1;// max 10
     private String postcode = "";// max 10
@@ -78,13 +80,15 @@ public class Adres {
 
         if (getAdresId() != adr.getAdresId()) return false;
 
-        if (!getPostcode().equals(adr.getPostcode())) return false;
+        if (!Objects.equals(getPostcode(), adr.getPostcode())) return false;
 
-        if (!getHuisnummer().equals(adr.getHuisnummer())) return false;
+        if (!Objects.equals(getHuisnummer(), adr.getHuisnummer())) return false;
 
-        if (!getStraat().equals(adr.getStraat())) return false;
+        if (!Objects.equals(getStraat(), adr.getStraat())) return false;
 
-        if (!getWoonplaats().equals(adr.getWoonplaats())) return false;
+        if (!Objects.equals(getWoonplaats(), adr.getWoonplaats())) return false;
+
+        if (!Objects.equals(getReiziger(), adr.getReiziger())) return false;
 
         return true;
     }

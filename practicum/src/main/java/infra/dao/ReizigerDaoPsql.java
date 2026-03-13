@@ -79,7 +79,6 @@ public class ReizigerDaoPsql implements IReizigerDao {
         Adres adr = reiziger.getAdres();
         // Delete adres
         if (adr != null) {
-            // Make sure result is only affected if there's a relation
             aDao.delete(adr);
         }
 
@@ -121,28 +120,13 @@ public class ReizigerDaoPsql implements IReizigerDao {
         if (!rs.next()) return null;
 
         Reiziger r = new Reiziger();
-
         r.setReizigerId(rs.getInt("reiziger_id"));
         r.setVoorletters(rs.getString("voorletters"));
         r.setTussenvoegsel(rs.getString("tussenvoegsel"));
         r.setAchternaam(rs.getString("achternaam"));
         r.setGeboortedatum(rs.getDate("geboortedatum"));
-
-        // Set relations
-        // Adres
         r.setAdres(aDao.findByReiziger(r));
-        Adres adr = r.getAdres();
-        if (adr != null) {
-            adr.setReiziger(r);
-        }
-        // OvChipkaart
         r.setOvChipkaart(ockDao.findByReiziger(r));
-        List<OvChipkaart> ockList = r.getOvChipkaart();
-        for (OvChipkaart ock : ockList) {
-            if (ock == null) continue;
-
-            ock.setReiziger(r);
-        }
 
         rs.close();
         pst.close();
@@ -173,29 +157,13 @@ public class ReizigerDaoPsql implements IReizigerDao {
         // Loop through results
         while (rs.next()) {
             Reiziger r = new Reiziger();
-
             r.setReizigerId(rs.getInt("reiziger_id"));
             r.setVoorletters(rs.getString("voorletters"));
             r.setTussenvoegsel(rs.getString("tussenvoegsel"));
             r.setAchternaam(rs.getString("achternaam"));
             r.setGeboortedatum(rs.getDate("geboortedatum"));
-
-            // Set relations
-            // Adres
             r.setAdres(aDao.findByReiziger(r));
-            Adres adr = r.getAdres();
-            if (adr != null) {
-                adr.setReiziger(r);
-            }
-
-            // OvChipkaart
             r.setOvChipkaart(ockDao.findByReiziger(r));
-            List<OvChipkaart> ockList = r.getOvChipkaart();
-            for (OvChipkaart ock : ockList) {
-                if (ock == null) continue;
-
-                ock.setReiziger(r);
-            }
 
             reizigers.add(r);
         }
@@ -227,29 +195,13 @@ public class ReizigerDaoPsql implements IReizigerDao {
         // Loop through results
         while (rs.next()) {
             Reiziger r = new Reiziger();
-
             r.setReizigerId(rs.getInt("reiziger_id"));
             r.setVoorletters(rs.getString("voorletters"));
             r.setTussenvoegsel(rs.getString("tussenvoegsel"));
             r.setAchternaam(rs.getString("achternaam"));
             r.setGeboortedatum(rs.getDate("geboortedatum"));
-
-            // Set relations
-            // Adres
             r.setAdres(aDao.findByReiziger(r));
-            Adres adr = r.getAdres();
-            if (adr != null) {
-                adr.setReiziger(r);
-            }
-
-            // OvChipkaart
             r.setOvChipkaart(ockDao.findByReiziger(r));
-            List<OvChipkaart> ockList = r.getOvChipkaart();
-            for (OvChipkaart ock : ockList) {
-                if (ock == null) continue;
-
-                ock.setReiziger(r);
-            }
 
             reizigers.add(r);
         }

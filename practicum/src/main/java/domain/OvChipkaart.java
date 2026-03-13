@@ -99,7 +99,7 @@ public class OvChipkaart {
         sb.append(getKlasse());
         sb.append(" met een saldo van €");
         sb.append(String.format("%.2f", getSaldo()));
-        sb.append(". [ReizigerId=]");
+        sb.append(" [ReizigerId=");
 
         Reiziger reiziger = getReiziger();
         if (reiziger == null) {
@@ -107,16 +107,16 @@ public class OvChipkaart {
         } else {
             sb.append(reiziger.getReizigerId());
         }
-
-        sb.append(". [ProductIds=]");
+        sb.append("] ");
 
         ArrayList<Product> producten = new ArrayList<Product>(getProducten());
         if (producten.isEmpty()) {
-            sb.append("geen");
+            sb.append("en geen product(en) ");
         } else {
+            sb.append("met producten: ");
             for (Product p : producten) {
-                sb.append(p.getProductNummer());
-                sb.append(",");
+                sb.append(sb.toString());
+                sb.append("\n");
             }
         }
 

@@ -134,6 +134,8 @@ public class Reiziger {
         if (!ignoreAdres && !(getAdres() == null)) {
             sb.append(" woont op: ");
             sb.append(getAdres().toString());
+        } else {
+            sb.append(" heeft geen adres ");
         }
 
         if (!ignoreOvChipkaarten && ovChipkaarten != null && !ovChipkaarten.isEmpty()) {
@@ -143,6 +145,8 @@ public class Reiziger {
                 sb.append(ovChip.toString());
                 sb.append("\n");
             }
+        } else {
+            sb.append(" heeft geen ov-chipkaarten ");
         }
 
         return sb.toString();

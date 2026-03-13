@@ -37,10 +37,12 @@ public class ReizigerDaoPsql implements IReizigerDao {
         boolean result = pst.executeUpdate() > 0;
         pst.close();
 
-        Adres adr = reiziger.getAdres();
-        // Only save adres if the Reiziger was successfully added & we have an Adres.
-        if (result && adr != null) {
-            aDao.save(adr);
+        if (aDao != null) {
+            Adres adr = reiziger.getAdres();
+            // Only save adres if the Reiziger was successfully added & we have an Adres.
+            if (result && adr != null) {
+                aDao.save(adr);
+            }
         }
 
         return result;
@@ -66,9 +68,11 @@ public class ReizigerDaoPsql implements IReizigerDao {
         boolean result = pst.executeUpdate() > 0;
         pst.close();
 
-        Adres adr = reiziger.getAdres();
-        if (result && adr != null) {
-            aDao.update(adr);
+        if (aDao != null) {
+            Adres adr = reiziger.getAdres();
+            if (result && adr != null) {
+                aDao.update(adr);
+            }
         }
 
         return result;
@@ -76,10 +80,12 @@ public class ReizigerDaoPsql implements IReizigerDao {
 
     @Override
     public boolean delete(Reiziger reiziger) throws SQLException {
-        Adres adr = reiziger.getAdres();
-        // Delete adres
-        if (adr != null) {
-            aDao.delete(adr);
+        if (aDao != null) {
+            Adres adr = reiziger.getAdres();
+            // Delete adres
+            if (adr != null) {
+                aDao.delete(adr);
+            }
         }
 
         // Delete reiziger with id param
@@ -125,8 +131,12 @@ public class ReizigerDaoPsql implements IReizigerDao {
         r.setTussenvoegsel(rs.getString("tussenvoegsel"));
         r.setAchternaam(rs.getString("achternaam"));
         r.setGeboortedatum(rs.getDate("geboortedatum"));
-        r.setAdres(aDao.findByReiziger(r));
-        r.setOvChipkaart(ockDao.findByReiziger(r));
+        if (aDao != null) {
+            r.setAdres(aDao.findByReiziger(r));
+        }
+        if (ockDao != null) {
+            r.setOvChipkaart(ockDao.findByReiziger(r));
+        }
 
         rs.close();
         pst.close();
@@ -162,8 +172,12 @@ public class ReizigerDaoPsql implements IReizigerDao {
             r.setTussenvoegsel(rs.getString("tussenvoegsel"));
             r.setAchternaam(rs.getString("achternaam"));
             r.setGeboortedatum(rs.getDate("geboortedatum"));
-            r.setAdres(aDao.findByReiziger(r));
-            r.setOvChipkaart(ockDao.findByReiziger(r));
+            if (aDao != null) {
+                r.setAdres(aDao.findByReiziger(r));
+            }
+            if (ockDao != null) {
+                r.setOvChipkaart(ockDao.findByReiziger(r));
+            }
 
             reizigers.add(r);
         }
@@ -200,8 +214,12 @@ public class ReizigerDaoPsql implements IReizigerDao {
             r.setTussenvoegsel(rs.getString("tussenvoegsel"));
             r.setAchternaam(rs.getString("achternaam"));
             r.setGeboortedatum(rs.getDate("geboortedatum"));
-            r.setAdres(aDao.findByReiziger(r));
-            r.setOvChipkaart(ockDao.findByReiziger(r));
+            if (aDao != null) {
+                r.setAdres(aDao.findByReiziger(r));
+            }
+            if (ockDao != null) {
+                r.setOvChipkaart(ockDao.findByReiziger(r));
+            }
 
             reizigers.add(r);
         }

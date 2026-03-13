@@ -11,10 +11,12 @@ import java.util.List;
 
 public class AdresDaoPsql implements IAdresDao {
     private Connection connection;
-    private IReizigerDao rdao;
+    private IReizigerDao rDao;
 
     public AdresDaoPsql(Connection connection) {
         this.connection = connection;
+        IReizigerDao rDao = new ReizigerDaoPsql(connection);
+        setReizigerDao(rDao);
     }
 
     @Override
@@ -87,7 +89,8 @@ public class AdresDaoPsql implements IAdresDao {
                 "postcode, " +
                 "huisnummer, " +
                 "straat, " +
-                "woonplaats " +
+                "woonplaats, " +
+                "reiziger_id " +
                 "FROM adres " +
                 "WHERE adres_id=?;";
 
@@ -107,6 +110,11 @@ public class AdresDaoPsql implements IAdresDao {
         a.setStraat(rs.getString("straat"));
         a.setWoonplaats(rs.getString("woonplaats"));
 
+        if (rDao != null) {
+            int reizigerId = rs.getInt("reiziger_id");
+            a.setReiziger(rDao.findById(reizigerId));
+        }
+
         rs.close();
         pst.close();
         return a;
@@ -119,7 +127,8 @@ public class AdresDaoPsql implements IAdresDao {
                 "postcode, " +
                 "huisnummer, " +
                 "straat, " +
-                "woonplaats " +
+                "woonplaats, " +
+                "reiziger_id " +
                 "FROM adres " +
                 "WHERE reiziger_id=?;";
 
@@ -142,6 +151,7 @@ public class AdresDaoPsql implements IAdresDao {
         a.setHuisnummer(rs.getString("huisnummer"));
         a.setStraat(rs.getString("straat"));
         a.setWoonplaats(rs.getString("woonplaats"));
+        a.setReiziger(reiziger);
 
         rs.close();
         pst.close();
@@ -155,7 +165,8 @@ public class AdresDaoPsql implements IAdresDao {
                 "postcode, " +
                 "huisnummer, " +
                 "straat, " +
-                "woonplaats " +
+                "woonplaats, " +
+                "reiziger_id " +
                 "FROM adres;";
 
         PreparedStatement pst = connection.prepareStatement(sql);
@@ -164,6 +175,10 @@ public class AdresDaoPsql implements IAdresDao {
 
         ResultSet rs = pst.getResultSet();
 
+        List<Reiziger> reizigers = new ArrayList<Reiziger>();
+        if (rDao != null) {
+            reizigers = rDao.findAll();// Get all reizigers to set relations
+        }
         ArrayList<Adres> adressen = new ArrayList<Adres>();
 
         while (rs.next()) {
@@ -173,11 +188,25 @@ public class AdresDaoPsql implements IAdresDao {
             a.setHuisnummer(rs.getString("huisnummer"));
             a.setStraat(rs.getString("straat"));
             a.setWoonplaats(rs.getString("woonplaats"));
+
+            // Get&Set parent relation
+            int reizigerId = rs.getInt("reiziger_id");
+            for (Reiziger r : reizigers) {
+                if (r.getReizigerId() == reizigerId) {
+                    a.setReiziger(r);
+                    break;
+                }
+            }
+
             adressen.add(a);
         }
 
         rs.close();
         pst.close();
         return adressen;
+    }
+
+    public void setReizigerDao(IReizigerDao reizigerDaoPsql) {
+        this.rDao = reizigerDaoPsql;
     }
 }

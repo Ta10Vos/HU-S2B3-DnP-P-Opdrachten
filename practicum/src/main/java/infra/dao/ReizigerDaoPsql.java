@@ -127,11 +127,21 @@ public class ReizigerDaoPsql implements IReizigerDao {
         r.setTussenvoegsel(rs.getString("tussenvoegsel"));
         r.setAchternaam(rs.getString("achternaam"));
         r.setGeboortedatum(rs.getDate("geboortedatum"));
-        r.setAdres(aDao.findByReiziger(r));
 
+        // Set relations
+        // Adres
+        r.setAdres(aDao.findByReiziger(r));
         Adres adr = r.getAdres();
         if (adr != null) {
             adr.setReiziger(r);
+        }
+        // OvChipkaart
+        r.setOvChipkaart(ockDao.findByReiziger(r));
+        List<OvChipkaart> ockList = r.getOvChipkaart();
+        for (OvChipkaart ock : ockList) {
+            if (ock == null) continue;
+
+            ock.setReiziger(r);
         }
 
         rs.close();
@@ -169,11 +179,22 @@ public class ReizigerDaoPsql implements IReizigerDao {
             r.setTussenvoegsel(rs.getString("tussenvoegsel"));
             r.setAchternaam(rs.getString("achternaam"));
             r.setGeboortedatum(rs.getDate("geboortedatum"));
-            r.setAdres(aDao.findByReiziger(r));
 
+            // Set relations
+            // Adres
+            r.setAdres(aDao.findByReiziger(r));
             Adres adr = r.getAdres();
             if (adr != null) {
                 adr.setReiziger(r);
+            }
+
+            // OvChipkaart
+            r.setOvChipkaart(ockDao.findByReiziger(r));
+            List<OvChipkaart> ockList = r.getOvChipkaart();
+            for (OvChipkaart ock : ockList) {
+                if (ock == null) continue;
+
+                ock.setReiziger(r);
             }
 
             reizigers.add(r);
@@ -212,11 +233,22 @@ public class ReizigerDaoPsql implements IReizigerDao {
             r.setTussenvoegsel(rs.getString("tussenvoegsel"));
             r.setAchternaam(rs.getString("achternaam"));
             r.setGeboortedatum(rs.getDate("geboortedatum"));
-            r.setAdres(aDao.findByReiziger(r));
 
+            // Set relations
+            // Adres
+            r.setAdres(aDao.findByReiziger(r));
             Adres adr = r.getAdres();
             if (adr != null) {
                 adr.setReiziger(r);
+            }
+
+            // OvChipkaart
+            r.setOvChipkaart(ockDao.findByReiziger(r));
+            List<OvChipkaart> ockList = r.getOvChipkaart();
+            for (OvChipkaart ock : ockList) {
+                if (ock == null) continue;
+
+                ock.setReiziger(r);
             }
 
             reizigers.add(r);
@@ -232,6 +264,6 @@ public class ReizigerDaoPsql implements IReizigerDao {
     }
 
     public void setOvChipkaartDao(IOvChipkaartDao ovChipkaartDaoPsql) {
-
+        this.ockDao = ovChipkaartDaoPsql;
     }
 }

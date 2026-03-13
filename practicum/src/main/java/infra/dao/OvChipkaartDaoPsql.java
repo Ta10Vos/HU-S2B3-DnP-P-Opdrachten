@@ -9,6 +9,7 @@ import java.util.List;
 
 public class OvChipkaartDaoPsql implements IOvChipkaartDao {
     private Connection connection;
+    private IReizigerDao rDao;
     private IProductDao pDao;
 
     public OvChipkaartDaoPsql(Connection connection) {
@@ -114,6 +115,10 @@ public class OvChipkaartDaoPsql implements IOvChipkaartDao {
         ock.setGeldigTot(rs.getDate("geldig_tot"));
         int klasse = rs.getInt("klasse");
         ock.setSaldo(rs.getBigDecimal("saldo"));
+        if (rDao != null) {
+            int reizigerId = rs.getInt("reiziger_id");
+            ock.setReiziger(rDao.findById(reizigerId));
+        }
 
         // Manual mapping variables from DB->Business Logic
         ock.setKlasse(BigInteger.valueOf(klasse));
@@ -151,6 +156,7 @@ public class OvChipkaartDaoPsql implements IOvChipkaartDao {
             ock.setGeldigTot(rs.getDate("geldig_tot"));
             int klasse = rs.getInt("klasse");
             ock.setSaldo(rs.getBigDecimal("saldo"));
+            ock.setReiziger(reiziger);
 
             // Manual mapping variables from DB->Business Logic
             ock.setKlasse(BigInteger.valueOf(klasse));
@@ -188,6 +194,10 @@ public class OvChipkaartDaoPsql implements IOvChipkaartDao {
             ock.setGeldigTot(rs.getDate("geldig_tot"));
             int klasse = rs.getInt("klasse");
             ock.setSaldo(rs.getBigDecimal("saldo"));
+            if (rDao != null) {
+                int reizigerId = rs.getInt("reiziger_id");
+                ock.setReiziger(rDao.findById(reizigerId));
+            }
 
             // Manual mapping variables from DB->Business Logic
             ock.setKlasse(BigInteger.valueOf(klasse));
@@ -198,6 +208,10 @@ public class OvChipkaartDaoPsql implements IOvChipkaartDao {
         rs.close();
         pst.close();
         return ovChipkaarten;
+    }
+
+    public void setReizigerDao(IReizigerDao reizigerDao) {
+        this.rDao = reizigerDao;
     }
 
     public void setProductDao(IProductDao productDao) {

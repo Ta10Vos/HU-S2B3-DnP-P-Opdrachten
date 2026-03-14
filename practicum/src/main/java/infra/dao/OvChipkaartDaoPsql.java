@@ -17,8 +17,8 @@ public class OvChipkaartDaoPsql implements IOvChipkaartDao {
     }
     @Override
     public boolean save(OvChipkaart ovChipkaart) throws SQLException {
-        String sql = "INSERT INT0 " +
-                "ov_chipkaart(kaart_nummer, geldig_tot, klasse, saldo, reiziger_id) " +
+        String sql = "INSERT INTO ov_chipkaart " +
+                " (kaart_nummer, geldig_tot, klasse, saldo, reiziger_id) " +
                 "VALUES (?, ?, ?, ?, ?);";
 
         PreparedStatement pst = connection.prepareStatement(sql);

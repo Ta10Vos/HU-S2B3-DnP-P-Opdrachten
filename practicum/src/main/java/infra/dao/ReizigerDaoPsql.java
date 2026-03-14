@@ -44,6 +44,15 @@ public class ReizigerDaoPsql implements IReizigerDao {
                 aDao.save(adr);
             }
         }
+        if (ockDao != null) {
+            if (result) {
+                List<OvChipkaart> ockList = reiziger.getOvChipkaart();
+
+                for (OvChipkaart ock : ockList) {
+                    ockDao.save(ock);
+                }
+            }
+        }
 
         return result;
     }
@@ -74,23 +83,32 @@ public class ReizigerDaoPsql implements IReizigerDao {
                 aDao.update(adr);
             }
         }
+        if (ockDao != null) {
+            if (result) {
+                List<OvChipkaart> ockList = reiziger.getOvChipkaart();
+
+                for (OvChipkaart ock : ockList) {
+                    ockDao.update(ock);
+                }
+            }
+        }
 
         return result;
     }
 
     @Override
     public boolean delete(Reiziger reiziger) throws SQLException {
-        if (ockDao != null) {
-            List<OvChipkaart> ockList = reiziger.getOvChipkaart();
-            for (OvChipkaart ock : ockList) {
-                ockDao.delete(ock);
-            }
-        }
         if (aDao != null) {
             Adres adr = reiziger.getAdres();
             // Delete adres
             if (adr != null) {
                 aDao.delete(adr);
+            }
+        }
+        if (ockDao != null) {
+            List<OvChipkaart> ockList = reiziger.getOvChipkaart();
+            for (OvChipkaart ock : ockList) {
+                ockDao.delete(ock);
             }
         }
 

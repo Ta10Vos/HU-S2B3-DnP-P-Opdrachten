@@ -80,6 +80,12 @@ public class ReizigerDaoPsql implements IReizigerDao {
 
     @Override
     public boolean delete(Reiziger reiziger) throws SQLException {
+        if (ockDao != null) {
+            List<OvChipkaart> ockList = reiziger.getOvChipkaart();
+            for (OvChipkaart ock : ockList) {
+                ockDao.delete(ock);
+            }
+        }
         if (aDao != null) {
             Adres adr = reiziger.getAdres();
             // Delete adres

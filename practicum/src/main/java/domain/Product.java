@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Product {
     private int productNummer;// Max 10 chars
@@ -60,5 +61,52 @@ public class Product {
 
     public void setOvChipKaarten(List<OvChipkaart> ovChipKaarten) {
         this.ovChipKaarten = ovChipKaarten;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        // Instanceof handles null
+        if (!(object instanceof Product)) return false;
+
+        Product p = (Product) object;
+
+        if (getProductNummer() != p.getProductNummer()) return false;
+
+        if (!Objects.equals(getNaam(), p.getNaam())) return false;
+
+        if (!Objects.equals(getBeschrijving(), p.getBeschrijving())) return false;
+
+        if (!Objects.equals(getPrijs(), p.getPrijs())) return false;
+
+        if (!Objects.equals(getOvChipKaarten(), p.getOvChipKaarten())) return false;
+
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+
+        sb.append("Product met productnummer: ");
+        sb.append(getProductNummer());
+        sb.append(" heeft de naam: ");
+        sb.append(getNaam());
+        sb.append(" en de beschrijving:\n ");
+        sb.append(getBeschrijving());
+        sb.append("\n en heeft de prijs: ");
+        sb.append(String.format("%.2f", getPrijs()));
+
+        ArrayList<OvChipkaart> ovChipKaarten = new ArrayList<OvChipkaart>(getOvChipKaarten());
+        if (ovChipKaarten.isEmpty()) {
+            sb.append("en geen product(en) ");
+        } else {
+            sb.append("met producten: ");
+            for (OvChipkaart ock : ovChipKaarten) {
+                sb.append(ock.toString());
+                sb.append("\n");
+            }
+        }
+
+        return sb.toString();
     }
 }

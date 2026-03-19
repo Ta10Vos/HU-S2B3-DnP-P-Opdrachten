@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import static java.math.RoundingMode.HALF_UP;
+
 public class Product {
     private int productNummer;// Max 10 chars
     private String naam;// Max 30 chars
@@ -50,7 +52,7 @@ public class Product {
     }
 
     public BigDecimal getPrijs() {
-        return BigDecimal.valueOf(prijs);
+        return BigDecimal.valueOf(prijs).setScale(2, HALF_UP);
     }
 
     public void setPrijs(BigDecimal prijs) {

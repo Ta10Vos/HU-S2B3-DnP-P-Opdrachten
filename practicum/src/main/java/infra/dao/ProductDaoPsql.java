@@ -3,6 +3,7 @@ package infra.dao;
 import domain.*;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ProductDaoPsql implements IProductDao {
@@ -18,7 +19,18 @@ public class ProductDaoPsql implements IProductDao {
         String sql = "INSERT INTO product " +
                 " (product_nummer, naam, beschrijving, prijs) " +
                 "VALUES (?, ?, ?, ?);";
-        return false;
+
+        PreparedStatement pst = connection.prepareStatement(sql);
+
+        pst.setInt(1, product.getProductNummer());
+        pst.setString(2, product.getNaam());
+        pst.setString(3, product.getBeschrijving());
+        pst.setBigDecimal(4, product.getPrijs());
+
+        boolean result = pst.executeUpdate() > 0;
+        pst.close();
+
+        return result;
     }
 
     @Override
@@ -27,16 +39,35 @@ public class ProductDaoPsql implements IProductDao {
                 "SET " +
                 "naam=?, " +
                 "beschrijving=?, " +
-                "prijs=?, " +
+                "prijs=? " +
                 "WHERE product_nummer=?;";
-        return false;
+
+        PreparedStatement pst = connection.prepareStatement(sql);
+
+        pst.setString(1, product.getNaam());
+        pst.setString(2, product.getBeschrijving());
+        pst.setBigDecimal(3, product.getPrijs());
+        pst.setInt(4, product.getProductNummer());
+
+        boolean result = pst.executeUpdate() > 0;
+        pst.close();
+
+        return result;
     }
 
     @Override
     public boolean delete(Product product) throws SQLException {
         String sql = "DELETE FROM product " +
                 "WHERE product_nummer=?;";
-        return false;
+
+        PreparedStatement pst = connection.prepareStatement(sql);
+
+        pst.setInt(1, product.getProductNummer());
+
+        boolean result = pst.executeUpdate() > 0;
+        pst.close();
+
+        return result;
     }
 
     @Override
@@ -48,7 +79,28 @@ public class ProductDaoPsql implements IProductDao {
                 "prijs " +
                 "FROM product " +
                 "WHERE product_nummer=?;";
-        return null;
+
+        PreparedStatement pst = connection.prepareStatement(sql);
+
+        pst.setInt(1, id);
+
+        if (!pst.execute()) return null;
+
+        ResultSet rs = pst.executeQuery();
+
+        if (!rs.next()) return null;
+
+        Product p = new Product();
+
+        p.setProductNummer(rs.getInt("product_nummer"));
+        p.setNaam(rs.getString("naam"));
+        p.setBeschrijving(rs.getString("beschrijving"));
+        p.setPrijs(rs.getBigDecimal("prijs"));
+
+        rs.close();
+        pst.close();
+
+        return p;
     }
 
     @Override
@@ -71,6 +123,28 @@ public class ProductDaoPsql implements IProductDao {
                 "beschrijving, " +
                 "prijs " +
                 "FROM product;";
-        return null;
+
+        PreparedStatement pst = connection.prepareStatement(sql);
+
+        if (!pst.execute()) return null;
+
+        ResultSet rs = pst.executeQuery();
+        ArrayList<Product> producten = new ArrayList<Product>();
+
+        while (rs.next()) {
+            Product p = new Product();
+
+            p.setProductNummer(rs.getInt("product_nummer"));
+            p.setNaam(rs.getString("naam"));
+            p.setBeschrijving(rs.getString("beschrijving"));
+            p.setPrijs(rs.getBigDecimal("prijs"));
+
+            producten.add(p);
+        }
+
+        rs.close();
+        pst.close();
+
+        return producten;
     }
 }

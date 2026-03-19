@@ -17,7 +17,7 @@ public class ProductDaoPsql implements IProductDao {
     @Override
     public boolean save(Product product) throws SQLException {
         String sql = "INSERT INTO product " +
-                " (product_nummer, naam, beschrijving, prijs) " +
+                "(product_nummer, naam, beschrijving, prijs) " +
                 "VALUES (?, ?, ?, ?);";
 
         PreparedStatement pst = connection.prepareStatement(sql);
@@ -105,14 +105,40 @@ public class ProductDaoPsql implements IProductDao {
 
     @Override
     public List<Product> findByOvChipkaart(OvChipkaart ovChipkaart) throws SQLException {
-//        String sql = "SELECT " +
-//                "product_nummer, " +
-//                "naam, " +
-//                "beschrijving, " +
-//                "prijs " +
-//                "FROM product " +
-//                "WHERE product_nummer=?;";
-        return null;
+        String sql = "SELECT " +
+                "p.product_nummer, " +
+                "p.naam, " +
+                "p.beschrijving, " +
+                "p.prijs " +
+                "FROM product AS p " +
+                "INNER JOIN ov_chipkaart_product AS ocp " +
+                "ON ocp.product_nummer = p.product_nummer " +
+                "WHERE ocp.kaart_nummer=?;";
+
+        PreparedStatement pst = connection.prepareStatement(sql);
+
+        pst.setInt(1, ovChipkaart.getKaartNummer());
+
+        if (!pst.execute()) return null;
+
+        ResultSet rs = pst.executeQuery();
+        ArrayList<Product> producten = new ArrayList<Product>();
+
+        while (rs.next()) {
+            Product p = new Product();
+
+            p.setProductNummer(rs.getInt("product_nummer"));
+            p.setNaam(rs.getString("naam"));
+            p.setBeschrijving(rs.getString("beschrijving"));
+            p.setPrijs(rs.getBigDecimal("prijs"));
+
+            producten.add(p);
+        }
+
+        rs.close();
+        pst.close();
+
+        return producten;
     }
 
     @Override

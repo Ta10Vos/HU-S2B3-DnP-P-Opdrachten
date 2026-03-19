@@ -31,7 +31,9 @@ public class Product {
 
     public void setNaam(String naam) {
         if (naam == null) return;
-        if (naam.length() > 30) return;
+        if (naam.length() > 30) {
+            naam = naam.substring(0, 30);
+        };
         this.naam = naam;
     }
 
@@ -41,7 +43,9 @@ public class Product {
 
     public void setBeschrijving(String beschrijving) {
         if (beschrijving == null) return;
-        if (beschrijving.length() > 512) return;
+        if (beschrijving.length() > 512) {
+            beschrijving = beschrijving.substring(0, 512);
+        };
         this.beschrijving = beschrijving;
     }
 

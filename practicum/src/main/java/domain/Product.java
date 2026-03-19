@@ -13,7 +13,7 @@ public class Product {
     private String beschrijving;// Max 512 chars
     private BigDecimal prijs;// Max length 16, precision 2
 
-    private List<OvChipkaart> ovChipKaarten = new ArrayList<OvChipkaart>();
+    private List<OvChipkaart> ovChipkaarten = new ArrayList<OvChipkaart>();
 
     public Product() {}
 
@@ -60,11 +60,13 @@ public class Product {
     }
 
     public List<OvChipkaart> getOvChipKaarten() {
-        return ovChipKaarten;
+        return ovChipkaarten;
     }
 
-    public void setOvChipKaarten(List<OvChipkaart> ovChipKaarten) {
-        this.ovChipKaarten = ovChipKaarten;
+    // How could I add voegToe & verwijder here and prevent recursiveness?
+
+    public void setOvChipKaarten(List<OvChipkaart> ovChipkaarten) {
+        this.ovChipkaarten = ovChipkaarten;
     }
 
     @Override

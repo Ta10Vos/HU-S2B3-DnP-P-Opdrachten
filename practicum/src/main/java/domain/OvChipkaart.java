@@ -53,6 +53,8 @@ public class OvChipkaart {
         return reiziger;
     }
 
+    // How could I add voegToe & verwijder here and prevent recursiveness?
+
     public void setReiziger(Reiziger reiziger) {
         this.reiziger = reiziger;
     }

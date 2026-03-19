@@ -82,6 +82,25 @@ public class Reiziger {
         return ovChipkaarten;
     }
 
+    public boolean voegToeOvChipkaart(OvChipkaart ovChipkaart) {
+        if (ovChipkaart == null) return false;
+
+        this.ovChipkaarten.add(ovChipkaart);
+        ovChipkaart.setReiziger(this);
+        return true;
+    }
+
+    public boolean verwijderOvChipkaart(OvChipkaart ovChipkaart) {
+        if (ovChipkaart == null) return false;
+
+        if(this.ovChipkaarten.remove(ovChipkaart)) {
+            ovChipkaart.setReiziger(null);
+            return true;
+        }
+
+        return false;
+    }
+
     public void setOvChipkaart(List<OvChipkaart> ovChipkaarten) {
         this.ovChipkaarten = ovChipkaarten;
     }
@@ -110,7 +129,8 @@ public class Reiziger {
         return true;
     }
 
-    public String toString(boolean ignoreAdres, boolean ignoreOvChipkaarten) {
+    @Override
+    public String toString() {
         StringBuilder sb = new StringBuilder();
 
         List<OvChipkaart> ovChipkaarten = getOvChipkaart();
@@ -131,14 +151,14 @@ public class Reiziger {
             sb.append(getGeboortedatum().toString());
         }
 
-        if (!ignoreAdres && !(getAdres() == null)) {
+        if (!(getAdres() == null)) {
             sb.append(" woont op: ");
             sb.append(getAdres().toString());
         } else {
             sb.append(" heeft geen adres ");
         }
 
-        if (!ignoreOvChipkaarten && ovChipkaarten != null && !ovChipkaarten.isEmpty()) {
+        if (ovChipkaarten != null && !ovChipkaarten.isEmpty()) {
             sb.append(" en heeft ov-chipkaarten: \n");
 
             for(OvChipkaart ovChip : getOvChipkaart()) {
@@ -150,10 +170,5 @@ public class Reiziger {
         }
 
         return sb.toString();
-    }
-
-    @Override
-    public String toString() {
-        return toString(false, false);
     }
 }

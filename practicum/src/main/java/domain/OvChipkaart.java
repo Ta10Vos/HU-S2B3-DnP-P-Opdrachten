@@ -53,8 +53,6 @@ public class OvChipkaart {
         return reiziger;
     }
 
-    // How could I add voegToe & verwijder here and prevent recursiveness?
-
     public void setReiziger(Reiziger reiziger) {
         this.reiziger = reiziger;
     }
@@ -62,6 +60,8 @@ public class OvChipkaart {
     public List<Product> getProducten() {
         return producten;
     }
+
+    // How could I add voegToe & verwijder here and prevent recursiveness?
 
     public void setProducten(List<Product> producten) {
         this.producten = producten;

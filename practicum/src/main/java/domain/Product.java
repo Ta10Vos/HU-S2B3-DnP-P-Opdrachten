@@ -11,7 +11,7 @@ public class Product {
     private int productNummer;// Max 10 chars
     private String naam;// Max 30 chars
     private String beschrijving;// Max 512 chars
-    private BigDecimal prijs;// Max length 16, precision 2
+    private double prijs;// Max length 16, precision 2
 
     private List<OvChipkaart> ovChipkaarten = new ArrayList<OvChipkaart>();
 
@@ -50,13 +50,13 @@ public class Product {
     }
 
     public BigDecimal getPrijs() {
-        return prijs;
+        return BigDecimal.valueOf(prijs);
     }
 
     public void setPrijs(BigDecimal prijs) {
         if (prijs == null) return;
         if (prijs.toString().length() > 17) return;// Include precision point + max length
-        this.prijs = prijs;
+        this.prijs = prijs.doubleValue();
     }
 
     public List<OvChipkaart> getOvChipKaarten() {

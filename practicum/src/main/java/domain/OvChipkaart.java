@@ -12,8 +12,8 @@ import java.util.Objects;
 public class OvChipkaart {
     private int kaartNummer;// Max length 10
     private Date geldigTot;
-    private BigInteger klasse;// Max length 1
-    private BigDecimal saldo;// Max length 16, precision 2
+    private int klasse;// Max length 1
+    private double saldo;// Max length 16, precision 2
 
     private Reiziger reiziger;
     private List<Product> producten = new ArrayList<Product>();
@@ -31,22 +31,22 @@ public class OvChipkaart {
         this.geldigTot = geldigTot;
     }
 
-    public BigInteger getKlasse() { return klasse; }
+    public BigInteger getKlasse() { return BigInteger.valueOf(klasse); }
 
     public void setKlasse(BigInteger klasse) {
         if (klasse == null) return;
         if (klasse.toString().length() > 1) return;
-        this.klasse = klasse;
+        this.klasse = klasse.intValue();
     }
 
     public BigDecimal getSaldo() {
-        return saldo;
+        return BigDecimal.valueOf(saldo);
     }
 
     public void setSaldo(BigDecimal saldo) {
         if (saldo == null) return;
         if (saldo.toString().length() > 17) return;// Include precision point + max length
-        this.saldo = saldo;
+        this.saldo = saldo.doubleValue();
     }
 
     public Reiziger getReiziger() {

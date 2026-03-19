@@ -45,7 +45,7 @@ public class OvChipkaart {
 
     public void setSaldo(BigDecimal saldo) {
         if (saldo == null) return;
-        if (saldo.toString().length() > 19) return;// Include precision point + max length
+        if (saldo.toString().length() > 17) return;// Include precision point + max length
         this.saldo = saldo;
     }
 
@@ -115,7 +115,7 @@ public class OvChipkaart {
         } else {
             sb.append("met producten: ");
             for (Product p : producten) {
-                sb.append(sb.toString());
+                sb.append(p.toString());
                 sb.append("\n");
             }
         }

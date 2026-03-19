@@ -65,7 +65,29 @@ public class Product {
         return ovChipkaarten;
     }
 
-    // How could I add voegToe & verwijder here and prevent recursiveness?
+    /**
+     * Adds an ovChipkaart relation and add this product to the ovChipkaart
+     */
+    public boolean voegToeOvChipkaart(OvChipkaart ovChipkaart) {
+        if (ovChipkaart == null) return false;
+
+        ovChipkaart.voegToeProduct(this);
+        this.ovChipkaarten.add(ovChipkaart);
+        return true;
+    }
+
+    /**
+     * Remove an ovChipkaart relation and remove this product from the ovChipkaart
+     */
+    public boolean verwijderOvChipkaart(OvChipkaart ovChipkaart) {
+        if (ovChipkaart == null) return false;
+
+        if (ovChipkaart.verwijderProduct(this)) {
+            return this.ovChipkaarten.remove(ovChipkaart);
+        }
+
+        return false;
+    }
 
     public void setOvChipKaarten(List<OvChipkaart> ovChipkaarten) {
         this.ovChipkaarten = ovChipkaarten;

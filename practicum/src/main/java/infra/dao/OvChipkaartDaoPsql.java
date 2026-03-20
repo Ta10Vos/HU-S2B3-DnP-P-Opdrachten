@@ -39,6 +39,12 @@ public class OvChipkaartDaoPsql implements IOvChipkaartDao {
         boolean result = pst.executeUpdate() > 0;
         pst.close();
 
+        if (pDao != null) {
+            for (Product p : ovChipkaart.getProducten()) {
+                pDao.save(p);
+            }
+        }
+
         return result;
     }
 
@@ -68,8 +74,14 @@ public class OvChipkaartDaoPsql implements IOvChipkaartDao {
 
         // Check if at least 1 row action was executed
         boolean result = pst.executeUpdate() > 0;
-
         pst.close();
+
+        if (pDao != null) {
+            for (Product p : ovChipkaart.getProducten()) {
+                pDao.update(p);
+            }
+        }
+
         return result;
     }
 
@@ -224,7 +236,11 @@ public class OvChipkaartDaoPsql implements IOvChipkaartDao {
         return ovChipkaarten;
     }
 
-    public boolean deleteOvChipkaartProduct(OvChipkaart ovChipkaart) throws SQLException {
+    /* ---
+        CRUD for the OvChipkaart_product relation
+       --- */
+
+    private boolean deleteOvChipkaartProduct(OvChipkaart ovChipkaart) throws SQLException {
         // Delete ALL relations of current Product and its ovChip
         String sql = "DELETE FROM ov_chipkaart_product " +
                 "WHERE kaart_nummer=?;";

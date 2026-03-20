@@ -9,7 +9,6 @@ import java.util.List;
 
 public class ProductDaoPsql implements IProductDao {
     private Connection connection;
-    private IOvChipkaartDao ockDao;
 
     public ProductDaoPsql(Connection connection) {
         this.connection = connection;
@@ -235,9 +234,5 @@ public class ProductDaoPsql implements IProductDao {
         pst.close();
 
         return result;
-    }
-
-    public void setOvChipkaartDao(IOvChipkaartDao ovChipkaartDaoPsql) {
-        this.ockDao = ovChipkaartDaoPsql;
     }
 }

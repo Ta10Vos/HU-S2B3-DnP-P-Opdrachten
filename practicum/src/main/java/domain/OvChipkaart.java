@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.math.RoundingMode;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,10 +14,12 @@ public class OvChipkaart {
     private int kaartNummer;// Max length 10
     private Date geldigTot;
     private int klasse;// Max length 1
-    private double saldo;// Max length 16, precision 2
+    private BigDecimal saldo;// Max length 16, precision 2
 
     private Reiziger reiziger;
     private List<Product> producten = new ArrayList<Product>();
+
+    public OvChipkaart() {}
 
     public int getKaartNummer() { return kaartNummer; }
 
@@ -40,13 +43,13 @@ public class OvChipkaart {
     }
 
     public BigDecimal getSaldo() {
-        return BigDecimal.valueOf(saldo);
+        return saldo;
     }
 
     public void setSaldo(BigDecimal saldo) {
         if (saldo == null) return;
         if (saldo.toString().length() > 17) return;// Include precision point + max length
-        this.saldo = saldo.doubleValue();
+        this.saldo = saldo;
     }
 
     public Reiziger getReiziger() {

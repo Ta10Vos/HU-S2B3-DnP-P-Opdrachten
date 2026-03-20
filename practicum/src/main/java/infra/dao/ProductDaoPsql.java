@@ -31,6 +31,9 @@ public class ProductDaoPsql implements IProductDao {
         boolean result = pst.executeUpdate() > 0;
         pst.close();
 
+        // Add relations
+        result = saveOvChipkaartProduct(product) && result;
+
         return result;
     }
 
@@ -53,13 +56,15 @@ public class ProductDaoPsql implements IProductDao {
         boolean result = pst.executeUpdate() > 0;
         pst.close();
 
-//        result = updateOvChipkaartProduct(product);
+        // Update relations (removes and saves the relations)
+        result = updateOvChipkaartProduct(product) && result;
 
         return result;
     }
 
     @Override
     public boolean delete(Product product) throws SQLException {
+        // Delete relations
         boolean result = deleteOvChipkaartProduct(product);
 
         String sql = "DELETE FROM product " +
@@ -183,13 +188,16 @@ public class ProductDaoPsql implements IProductDao {
         CRUD for the OvChipkaart_product relation
        --- */
     private boolean saveOvChipkaartProduct(Product product) throws SQLException {
+        List<OvChipkaart> ockList = product.getOvChipKaarten();
+
+        if (ockList.isEmpty()) return true;// No need to save if there's no relations
+
         String sql = "INSERT INTO ov_chipkaart_product " +
                 "(kaart_nummer, product_nummer) " +
                 "VALUES (?, ?);";
 
         PreparedStatement pst = connection.prepareStatement(sql);
 
-        List<OvChipkaart> ockList = product.getOvChipKaarten();
         for (OvChipkaart ock : ockList) {
             pst.setInt(1, ock.getKaartNummer());
             pst.setInt(2, product.getProductNummer());
@@ -205,28 +213,17 @@ public class ProductDaoPsql implements IProductDao {
     }
 
     private boolean updateOvChipkaartProduct(Product product) throws SQLException {
-        String existingRelationsSql = "DELETE FROM ov_chipkaart_product " +
-                "WHERE kaart_nummer=? " +
-                "AND product_nummer=?;";
+        // Delete all existing relations with product
+        boolean result = deleteOvChipkaartProduct(product);
 
-        PreparedStatement pst = connection.prepareStatement(existingRelationsSql);
-
-
-        List<OvChipkaart> ockList = product.getOvChipKaarten();
-        for (OvChipkaart ock : ockList) {
-            pst.setInt(1, ock.getKaartNummer());
-            pst.setInt(2, product.getProductNummer());
-
-            pst.addBatch();
-        }
-
-        boolean result = pst.executeUpdate() >= ockList.size();
-        pst.close();
+        // Add all existing relations back.
+        result = saveOvChipkaartProduct(product) && result;
 
         return result;
     }
 
     private boolean deleteOvChipkaartProduct(Product product) throws SQLException {
+        // Delete ALL relations of current Product and its ovChip
         String sql = "DELETE FROM ov_chipkaart_product " +
                 "WHERE product_nummer=?;";
 

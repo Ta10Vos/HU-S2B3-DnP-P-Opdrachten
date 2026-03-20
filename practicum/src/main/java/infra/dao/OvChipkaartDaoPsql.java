@@ -75,13 +75,18 @@ public class OvChipkaartDaoPsql implements IOvChipkaartDao {
 
     @Override
     public boolean delete(OvChipkaart ovChipkaart) throws SQLException {
+        boolean result = true;
+        if (pDao != null) {
+            result = deleteOvChipkaartProduct(ovChipkaart);
+        }
+
         String sql = "DELETE FROM ov_chipkaart " +
                 "WHERE kaart_nummer=?;";
 
         PreparedStatement pst = connection.prepareStatement(sql);
         pst.setInt(1, ovChipkaart.getKaartNummer());
 
-        boolean result = pst.executeUpdate() > 0;
+        result = pst.executeUpdate() > 0 && result;
 
         pst.close();
         return result;
@@ -217,6 +222,21 @@ public class OvChipkaartDaoPsql implements IOvChipkaartDao {
         rs.close();
         pst.close();
         return ovChipkaarten;
+    }
+
+    public boolean deleteOvChipkaartProduct(OvChipkaart ovChipkaart) throws SQLException {
+        // Delete ALL relations of current Product and its ovChip
+        String sql = "DELETE FROM ov_chipkaart_product " +
+                "WHERE kaart_nummer=?;";
+
+        PreparedStatement pst = connection.prepareStatement(sql);
+
+        pst.setInt(1, ovChipkaart.getKaartNummer());
+
+        boolean result = pst.executeUpdate() > 0;
+        pst.close();
+
+        return result;
     }
 
     public void setReizigerDao(IReizigerDao reizigerDao) {

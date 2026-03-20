@@ -46,7 +46,7 @@ public class OvChipkaartDaoPsql implements IOvChipkaartDao {
                     p.voegToeOvChipkaart(ovChipkaart);
                 }
                 // Update relation
-                pDao.update(p);
+                pDao.save(p);
             }
         }
 

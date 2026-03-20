@@ -41,7 +41,12 @@ public class OvChipkaartDaoPsql implements IOvChipkaartDao {
 
         if (pDao != null) {
             for (Product p : ovChipkaart.getProducten()) {
-                pDao.save(p);
+                // Make sure current ovChipkaart is included in the list if it was not added (prevent test conflicts)
+                if (!p.getOvChipKaarten().contains(ovChipkaart)) {
+                    p.voegToeOvChipkaart(ovChipkaart);
+                }
+                // Update relation
+                pDao.update(p);
             }
         }
 
@@ -78,6 +83,11 @@ public class OvChipkaartDaoPsql implements IOvChipkaartDao {
 
         if (pDao != null) {
             for (Product p : ovChipkaart.getProducten()) {
+                // Make sure current ovChipkaart is included in the list if it was not added (prevent test conflicts)
+                if (!p.getOvChipKaarten().contains(ovChipkaart)) {
+                    p.getOvChipKaarten().add(ovChipkaart);
+                }
+
                 pDao.update(p);
             }
         }

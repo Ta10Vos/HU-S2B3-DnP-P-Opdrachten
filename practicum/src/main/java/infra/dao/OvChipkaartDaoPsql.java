@@ -37,8 +37,8 @@ public class OvChipkaartDaoPsql implements IOvChipkaartDao {
 
         // Check if at least 1 row action was executed
         boolean result = pst.executeUpdate() > 0;
-
         pst.close();
+
         return result;
     }
 
@@ -119,6 +119,9 @@ public class OvChipkaartDaoPsql implements IOvChipkaartDao {
             int reizigerId = rs.getInt("reiziger_id");
             ock.setReiziger(rDao.findById(reizigerId));
         }
+        if (pDao != null) {
+            ock.setProducten(pDao.findByOvChipkaart(ock));
+        }
 
         // Manual mapping variables from DB->Business Logic
         ock.setKlasse(BigInteger.valueOf(klasse));
@@ -157,6 +160,9 @@ public class OvChipkaartDaoPsql implements IOvChipkaartDao {
             int klasse = rs.getInt("klasse");
             ock.setSaldo(rs.getBigDecimal("saldo"));
             ock.setReiziger(reiziger);
+            if (pDao != null) {
+                ock.setProducten(pDao.findByOvChipkaart(ock));
+            }
 
             // Manual mapping variables from DB->Business Logic
             ock.setKlasse(BigInteger.valueOf(klasse));
@@ -197,6 +203,9 @@ public class OvChipkaartDaoPsql implements IOvChipkaartDao {
             if (rDao != null) {
                 int reizigerId = rs.getInt("reiziger_id");
                 ock.setReiziger(rDao.findById(reizigerId));
+            }
+            if (pDao != null) {
+                ock.setProducten(pDao.findByOvChipkaart(ock));
             }
 
             // Manual mapping variables from DB->Business Logic

@@ -3,6 +3,7 @@ package infra.dao;
 import domain.*;
 
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,11 +53,15 @@ public class ProductDaoPsql implements IProductDao {
         boolean result = pst.executeUpdate() > 0;
         pst.close();
 
+//        result = updateOvChipkaartProduct(product);
+
         return result;
     }
 
     @Override
     public boolean delete(Product product) throws SQLException {
+        boolean result = deleteOvChipkaartProduct(product);
+
         String sql = "DELETE FROM product " +
                 "WHERE product_nummer=?;";
 
@@ -64,7 +69,7 @@ public class ProductDaoPsql implements IProductDao {
 
         pst.setInt(1, product.getProductNummer());
 
-        boolean result = pst.executeUpdate() > 0;
+        result = pst.executeUpdate() > 0 && result;
         pst.close();
 
         return result;
@@ -172,5 +177,70 @@ public class ProductDaoPsql implements IProductDao {
         pst.close();
 
         return producten;
+    }
+
+    /* ---
+        CRUD for the OvChipkaart_product relation
+       --- */
+    private boolean saveOvChipkaartProduct(Product product) throws SQLException {
+        String sql = "INSERT INTO ov_chipkaart_product " +
+                "(kaart_nummer, product_nummer) " +
+                "VALUES (?, ?);";
+
+        PreparedStatement pst = connection.prepareStatement(sql);
+
+        List<OvChipkaart> ockList = product.getOvChipKaarten();
+        for (OvChipkaart ock : ockList) {
+            pst.setInt(1, ock.getKaartNummer());
+            pst.setInt(2, product.getProductNummer());
+
+            pst.addBatch();
+        }
+
+        // Make sure all INSERTS have been executed properly
+        boolean result = pst.executeUpdate() >= ockList.size();
+        pst.close();
+
+        return result;
+    }
+
+    private boolean updateOvChipkaartProduct(Product product) throws SQLException {
+        String existingRelationsSql = "DELETE FROM ov_chipkaart_product " +
+                "WHERE kaart_nummer=? " +
+                "AND product_nummer=?;";
+
+        PreparedStatement pst = connection.prepareStatement(existingRelationsSql);
+
+
+        List<OvChipkaart> ockList = product.getOvChipKaarten();
+        for (OvChipkaart ock : ockList) {
+            pst.setInt(1, ock.getKaartNummer());
+            pst.setInt(2, product.getProductNummer());
+
+            pst.addBatch();
+        }
+
+        boolean result = pst.executeUpdate() >= ockList.size();
+        pst.close();
+
+        return result;
+    }
+
+    private boolean deleteOvChipkaartProduct(Product product) throws SQLException {
+        String sql = "DELETE FROM ov_chipkaart_product " +
+                "WHERE product_nummer=?;";
+
+        PreparedStatement pst = connection.prepareStatement(sql);
+
+        pst.setInt(1, product.getProductNummer());
+
+        boolean result = pst.executeUpdate() > 0;
+        pst.close();
+
+        return result;
+    }
+
+    public void setOvChipkaartDao(IOvChipkaartDao ovChipkaartDaoPsql) {
+        this.ockDao = ovChipkaartDaoPsql;
     }
 }

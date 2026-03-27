@@ -14,7 +14,7 @@ public class OvChipkaart {
     private int kaartNummer;// Max length 10
     private Date geldigTot;
     private int klasse;// Max length 1
-    private BigDecimal saldo;// Max length 16, precision 2
+    private BigDecimal saldo;// Max precision 16, scale 2
 
     private Reiziger reiziger;
     private List<Product> producten = new ArrayList<Product>();
@@ -48,7 +48,7 @@ public class OvChipkaart {
 
     public void setSaldo(BigDecimal saldo) {
         if (saldo == null) return;
-        if (saldo.toString().length() > 17) return;// Include precision point + max length
+        if (saldo.precision() > 16) return;// Make sure its not longer than precision
         this.saldo = saldo;
     }
 

@@ -13,7 +13,13 @@ public class Product {
     private int productNummer;// Max 10 chars
     private String naam;// Max 30 chars
     private String beschrijving;// Max 512 chars
-    private BigDecimal prijs;// Max length 16, precision 2
+    /* I will keep using the BigDecimal wrapper class,
+    because changing it to a primitive type will change the given rounded value (scale) by rounding trailing zeros. (e.g. 5,10 with BigDecimal-> 5,1 with float)
+    This alters functionality in an unexpected manner, which also breaks the tests.
+    I would argue that this is far from desired behaviour, because you'd expect a domain class to save the value exactly how you give it,
+    but that does not happen if I change the datatype to float instead of using the wrapper class BigDecimal
+     */
+    private BigDecimal prijs;// Max precision 16, scale 2
 
     private List<OvChipkaart> ovChipkaarten = new ArrayList<OvChipkaart>();
 
@@ -55,7 +61,7 @@ public class Product {
 
     public void setPrijs(BigDecimal prijs) {
         if (prijs == null) return;
-        if (prijs.toString().length() > 17) return;// Include precision point + max length
+        if (prijs.precision() > 16) return;// Include precision point + max length
         this.prijs = prijs;
     }
 

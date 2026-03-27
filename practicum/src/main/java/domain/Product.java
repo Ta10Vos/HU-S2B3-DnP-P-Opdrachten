@@ -75,8 +75,12 @@ public class Product {
     public boolean voegToeOvChipkaart(OvChipkaart ovChipkaart) {
         if (ovChipkaart == null) return false;
 
-        ovChipkaart.voegToeProduct(this);
-        this.ovChipkaarten.add(ovChipkaart);
+        // Voeg alleen toe als het nog niet is toegevoegd
+        if (!this.ovChipkaarten.contains(ovChipkaart)) {
+            this.ovChipkaarten.add(ovChipkaart);
+            ovChipkaart.voegToeProduct(this);
+        }
+
         return true;
     }
 

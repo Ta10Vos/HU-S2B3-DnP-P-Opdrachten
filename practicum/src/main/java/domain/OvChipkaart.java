@@ -73,10 +73,10 @@ public class OvChipkaart {
         // Only add if it hasn't been added yet
         if (!this.producten.contains(product)) {
             this.producten.add(product);
-            product.voegToeOvChipkaart(this);
+            return product.voegToeOvChipkaart(this);
         }
 
-        return true;
+        return false;
     }
 
     /**
@@ -85,7 +85,14 @@ public class OvChipkaart {
     public boolean verwijderProduct(Product product) {
         if (product == null) return false;
 
-        return this.producten.remove(product);
+        // Product does not exist, cannot be removed.
+        if (!this.producten.contains(product)) return false;
+
+        if (this.producten.remove(product)) {
+            return product.verwijderOvChipkaart(this);
+        }
+
+        return false;
     }
 
     public void setProducten(List<Product> producten) {

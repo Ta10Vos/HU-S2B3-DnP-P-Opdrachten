@@ -78,10 +78,10 @@ public class Product {
         // Only add if it hasn't been added yet
         if (!this.ovChipkaarten.contains(ovChipkaart)) {
             this.ovChipkaarten.add(ovChipkaart);
-            ovChipkaart.voegToeProduct(this);
+            return ovChipkaart.voegToeProduct(this);
         }
 
-        return true;
+        return false;
     }
 
     /**
@@ -90,8 +90,11 @@ public class Product {
     public boolean verwijderOvChipkaart(OvChipkaart ovChipkaart) {
         if (ovChipkaart == null) return false;
 
-        if (ovChipkaart.verwijderProduct(this)) {
-            return this.ovChipkaarten.remove(ovChipkaart);
+        // OvChipkaart does not exist, cannot be removed
+        if (!this.ovChipkaarten.contains(ovChipkaart)) return false;
+
+        if (this.ovChipkaarten.remove(ovChipkaart)) {
+            return ovChipkaart.verwijderProduct(this);
         }
 
         return false;

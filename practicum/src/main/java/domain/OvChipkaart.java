@@ -139,7 +139,11 @@ public class OvChipkaart {
         sb.append(" in klasse ");
         sb.append(getKlasse());
         sb.append(" met een saldo van €");
-        sb.append(String.format("%.2f", getSaldo()));
+        if (getSaldo() == null) {
+            sb.append("0.00");
+        } else {
+            sb.append(String.format("%.2f", getSaldo()));
+        }
         sb.append(" [ReizigerId=");
 
         Reiziger reiziger = getReiziger();

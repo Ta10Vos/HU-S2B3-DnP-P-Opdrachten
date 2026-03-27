@@ -140,13 +140,17 @@ public class Product {
         sb.append(" en de beschrijving:\n ");
         sb.append(getBeschrijving());
         sb.append("\n en heeft de prijs: ");
-        sb.append(String.format("%.2f", getPrijs()));
+        if (getPrijs() == null) {
+            sb.append("0.00");
+        } else {
+            sb.append(String.format("%.2f", getPrijs()));
+        }
 
         ArrayList<OvChipkaart> ovChipKaarten = new ArrayList<OvChipkaart>(getOvChipKaarten());
         if (ovChipKaarten.isEmpty()) {
-            sb.append("en geen ovchipkaart(en) ");
+            sb.append(" en geen ovchipkaart(en) ");
         } else {
-            sb.append("met ovchipkaart(en): ");
+            sb.append(" met ovchipkaart(en): ");
             for (OvChipkaart ock : ovChipKaarten) {
                 sb.append(ock.toString());
                 sb.append("\n");

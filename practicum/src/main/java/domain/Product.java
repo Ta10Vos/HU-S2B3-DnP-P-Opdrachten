@@ -23,7 +23,8 @@ public class Product {
 
     private List<OvChipkaart> ovChipkaarten = new ArrayList<OvChipkaart>();
 
-    public Product() {}
+    public Product() {
+    }
 
     public int getProductNummer() {
         return productNummer;
@@ -41,7 +42,8 @@ public class Product {
         if (naam == null) return;
         if (naam.length() > 30) {
             naam = naam.substring(0, 30);
-        };
+        }
+        ;
         this.naam = naam;
     }
 
@@ -53,11 +55,14 @@ public class Product {
         if (beschrijving == null) return;
         if (beschrijving.length() > 512) {
             beschrijving = beschrijving.substring(0, 512);
-        };
+        }
+        ;
         this.beschrijving = beschrijving;
     }
 
-    public BigDecimal getPrijs() { return prijs; }
+    public BigDecimal getPrijs() {
+        return prijs;
+    }
 
     public void setPrijs(BigDecimal prijs) {
         if (prijs == null) return;
@@ -76,12 +81,11 @@ public class Product {
         if (ovChipkaart == null) return false;
 
         // Only add if it hasn't been added yet
-        if (!this.ovChipkaarten.contains(ovChipkaart)) {
-            this.ovChipkaarten.add(ovChipkaart);
-            return ovChipkaart.voegToeProduct(this);
-        }
+        if (this.ovChipkaarten.contains(ovChipkaart)) return false;
 
-        return false;
+        this.ovChipkaarten.add(ovChipkaart);
+        ovChipkaart.voegToeProduct(this);
+        return true;
     }
 
     /**
@@ -94,7 +98,8 @@ public class Product {
         if (!this.ovChipkaarten.contains(ovChipkaart)) return false;
 
         if (this.ovChipkaarten.remove(ovChipkaart)) {
-            return ovChipkaart.verwijderProduct(this);
+            ovChipkaart.verwijderProduct(this);
+            return true;
         }
 
         return false;

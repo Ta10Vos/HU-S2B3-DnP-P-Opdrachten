@@ -19,22 +19,29 @@ public class OvChipkaart {
     private Reiziger reiziger;
     private List<Product> producten = new ArrayList<Product>();
 
-    public OvChipkaart() {}
+    public OvChipkaart() {
+    }
 
-    public int getKaartNummer() { return kaartNummer; }
+    public int getKaartNummer() {
+        return kaartNummer;
+    }
 
     public void setKaartNummer(int kaartNummer) {
         this.kaartNummer = kaartNummer;
     }
 
-    public Date getGeldigTot() { return geldigTot; }
+    public Date getGeldigTot() {
+        return geldigTot;
+    }
 
     public void setGeldigTot(Date geldigTot) {
         if (geldigTot == null) return;
         this.geldigTot = geldigTot;
     }
 
-    public BigInteger getKlasse() { return BigInteger.valueOf(klasse); }
+    public BigInteger getKlasse() {
+        return BigInteger.valueOf(klasse);
+    }
 
     public void setKlasse(BigInteger klasse) {
         if (klasse == null) return;
@@ -71,12 +78,11 @@ public class OvChipkaart {
         if (product == null) return false;
 
         // Only add if it hasn't been added yet
-        if (!this.producten.contains(product)) {
-            this.producten.add(product);
-            return product.voegToeOvChipkaart(this);
-        }
+        if (this.producten.contains(product)) return false;
 
-        return false;
+        this.producten.add(product);
+        product.voegToeOvChipkaart(this);
+        return true;
     }
 
     /**
@@ -89,7 +95,8 @@ public class OvChipkaart {
         if (!this.producten.contains(product)) return false;
 
         if (this.producten.remove(product)) {
-            return product.verwijderOvChipkaart(this);
+            product.verwijderOvChipkaart(this);
+            return true;
         }
 
         return false;

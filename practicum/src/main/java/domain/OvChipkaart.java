@@ -135,11 +135,13 @@ public class OvChipkaart {
         if (producten.isEmpty()) {
             sb.append("en geen product(en) ");
         } else {
-            sb.append("met producten: ");
+            sb.append("met producten: [");
             for (Product p : producten) {
-                sb.append(p.toString());
-                sb.append("\n");
+                sb.append(p.getProductNummer());
+                sb.append(",");
             }
+
+            sb.append("]");
         }
 
         return sb.toString();

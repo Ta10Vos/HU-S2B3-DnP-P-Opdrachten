@@ -132,9 +132,9 @@ public class Product {
 
         ArrayList<OvChipkaart> ovChipKaarten = new ArrayList<OvChipkaart>(getOvChipKaarten());
         if (ovChipKaarten.isEmpty()) {
-            sb.append("en geen product(en) ");
+            sb.append("en geen ovchipkaart(en) ");
         } else {
-            sb.append("met producten: ");
+            sb.append("met ovchipkaart(en): ");
             for (OvChipkaart ock : ovChipKaarten) {
                 sb.append(ock.toString());
                 sb.append("\n");
